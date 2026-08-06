@@ -10,7 +10,7 @@ function [r_array] = param_computing(file,m_array,t_array)
 %           r_array: the resut array with [m, t, pe, pe2, pe2_normalized, t_compute]
 %           for every (m,t) combinaison
 %  Example:
-%  param_computing(x_rand.mat,15,1)
+%  param_computing('x_rand.mat',5,1)
 % =================================
 
 data= load(file);
@@ -23,12 +23,12 @@ for t= t_array
         tic
         temp = zeros(1:3);
         [pe pe2 pe2_normalized] = permentropy(S,m,t);
+        r_array(t*m,6)= toc; % t_compute
         r_array(t*m,1)= t;
         r_array(t*m,2)= m;
         r_array(t*m,3)= pe;
         r_array(t*m,4)= pe2;
         r_array(t*m,5)= pe2_normalized;
-        r_array(t*m,6)= toc; % t_compute
     end
 end
 
