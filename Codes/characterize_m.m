@@ -1,6 +1,6 @@
 function r_array = characterize_m(file,m_array,t_array)
 % =======
-% Documentation
+% D
 % 
 % 
 % =========
