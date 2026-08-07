@@ -21,7 +21,7 @@ function [pe pe2 pe2_normalizada] = pec(y,m,t)
 %           hist:  histograma experimental de Band y Pompe
 % Por ejemplo
 %               x= [4,7,9,10,6,11,3]
-%               [e e2 e2_normalizada hist] = permentropy(x,3,1)
+%               [e e2 e2_normalizada] = permentropy(x,3,1)
 %%=========================================================================
 
 ly = length(y);

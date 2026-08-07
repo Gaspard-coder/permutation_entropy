@@ -1,6 +1,6 @@
 function r_array = double_characterization(file,m_array,t_array)
 % =========================================================================
-% Caracterisation de l'influence de m pour plusieurs valeurs de t
+% Characterization of the effect of different values of m and t
 % =========================================================================
 %
 % Input:

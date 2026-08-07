@@ -1,5 +1,7 @@
 function r_array = characterize_m(file,m_array,t)
-% =======
+% =========================================================================
+% Characterization of the effect of different values of m for a given t
+% =========================================================================
 %
 % Input:
 %   file     : .mat file with the signal (1-dimension)
