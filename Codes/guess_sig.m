@@ -1,7 +1,21 @@
 function [pe2_normalized lambda] = guess_sig(file,m_array,t_array)
 
-% ===
-% Comments
+% =========================================================================
+% Characterization of an unknown signal with permutation entropy
+% and lyapunov exponent
+% =========================================================================
+%
+% Input:
+%   file     : .mat file with the signal (1-dimension)
+%   m_array  : m values to test
+%   t_array  : t values to test
+%
+% Output:
+%   r_array  : [pe2_normalized lambda]
+%   
+%
+% Exemple:
+%   guess_sig('signal.mat', 3:8, [1 2 4]);
 % ===
 
 % pe2_normalized computing (shorten version of param_computing_opti)
