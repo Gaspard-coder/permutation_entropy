@@ -4,6 +4,7 @@ function [pe pe2 pe2_normalized] = permentropy_opti(y,m,t)
 % Doctorado en Ingenier�a
 % Facultad Regional Buenos Aires - Universidad Tecnologica Nacional
 % Catedra Dr. Walter Legnani
+% Computation optimization by Gaspard Vibert
 % =======================================================================
 % Calculo de la entropia de permutacion y del histograma correspondiente
 % Segun el metodo de Bandt y Pompe (2002)
