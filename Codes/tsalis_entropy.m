@@ -39,7 +39,11 @@ c = accumarray(ic,1);
 p = c / sum(c);
 
 % tsalis entropy (ln version)
-S = (1/(q-1))*(1-sum(p.^q));
+if q == 1
+    S = -sum(p .* log(p)); %Shannon limit
+else
+    S = (1/(q-1))*(1-sum(p.^q));
+end
 
 % Normalized tsalis entropy
 H = S / log(factorial(m));
