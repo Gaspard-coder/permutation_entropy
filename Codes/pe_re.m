@@ -40,11 +40,11 @@ hist = c;
  
 c=c(find(c~=0));
 p = c/sum(c);
- pe = -sum(p .* log2(p))/factorial(m); % linea original
- re = (1/(1-alpha))*log(sum(p.^alpha)); %se usa log en lugar de log2 para
- % comparar con la entropia de tsalis
- te = (1/(q-1))*(1-sum(p.^q));
- %te = -(1/(q-1))*(sum(p-(p).^q));
+pe = -sum(p .* log2(p))/factorial(m); % linea original
+re = (1/(1-alpha))*log(sum(p.^alpha)); %se usa log en lugar de log2 para
+% comparar con la entropia de tsalis
+te = (1/(q-1))*(1-sum(p.^q));
+%te = -(1/(q-1))*(sum(p-(p).^q));
  
  
 %WEL pe = -sum(p .* log2(p));  no normalizado
