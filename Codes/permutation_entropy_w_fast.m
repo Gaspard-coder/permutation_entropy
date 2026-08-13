@@ -19,7 +19,7 @@
 % Agregado peso
 % =========================================================================
 
-function [pe_2] = permutation_entropy_w_fast(y,m,t)
+function [pe_2 pe] = permutation_entropy_w_fast(y,m,t)
 len_y = length(y);
 
 % Genero las particiones
@@ -45,6 +45,7 @@ end
 
 p = count(count~=0) / sum(count);
 pe_2 = -sum(p.*log2(p)) / log2(factorial(m)); %normalizada, log base 2
+pe = -sum(p.*log(p)) / log(factorial(m)); %normalized, ln
 end
 % Lehmer code
 function i = hash(x)
