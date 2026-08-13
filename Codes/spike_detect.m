@@ -10,7 +10,7 @@ function [pe] = spike_detect(y, m_array, t_array, w_size, slid)
 %   slid    : Step size / shift between consecutive windows in samples
 %
 % Output:
-%   pe      - Calculated WPE values across sliding windows
+%   pe      - Calculated normalized ln WPE values across sliding windows
 %             (Size: [num_m, num_t, num_windows] or [1, num_windows] if scalar parameters)
 
     % Ensure signal is a row vector
@@ -48,9 +48,10 @@ function [pe] = spike_detect(y, m_array, t_array, w_size, slid)
             m_val = m_array(im);
             for it = 1:num_t
                 t_val = t_array(it);
-                % Call permutation_entropy_w_fast (uses normalized log output pe)
-                [~, pe_val] = permutation_entropy_w_fast(sub_y, m_val, t_val);
-                pe(im, it, k) = pe_val;
+                % 
+                [p_unnorm, ~, p_norm] = permutation_entropy_w_fast(sub_y, m_val, t_val);
+                pe(im, it, k)      = p_unnorm;
+                pe_norm(im, it, k) = p_norm;
             end
         end
     end

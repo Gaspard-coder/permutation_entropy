@@ -8,6 +8,8 @@
 %
 % Output 
 %           pe:    entropia de permuacion
+%           pe_2:  permutation entropy in log2
+%           pe_norm: normalized permutation entropy in ln
 %           hist:  histograma para el orden de la distribucion
 %
 % Referencias
@@ -19,7 +21,7 @@
 % Agregado peso
 % =========================================================================
 
-function [pe_2 pe] = permutation_entropy_w_fast(y,m,t)
+function [pe pe_2 pe_norm] = permutation_entropy_w_fast(y,m,t)
 len_y = length(y);
 
 % Genero las particiones
@@ -44,8 +46,9 @@ for i = 1:factorial(m)
 end
 
 p = count(count~=0) / sum(count);
+pe = -sum(p.*log(p));
 pe_2 = -sum(p.*log2(p)) / log2(factorial(m)); %normalizada, log base 2
-pe = -sum(p.*log(p)) / log(factorial(m)); %normalized, ln
+pe_norm = -sum(p.*log(p)) / log(factorial(m)); %normalized, ln
 end
 % Lehmer code
 function i = hash(x)
