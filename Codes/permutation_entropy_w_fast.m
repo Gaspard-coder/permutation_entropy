@@ -19,7 +19,7 @@
 % Agregado peso
 % =========================================================================
 
-function [pe] = permutation_entropy_w_fast(y,m,t)
+function [pe_2] = permutation_entropy_w_fast(y,m,t)
 len_y = length(y);
 
 % Genero las particiones
@@ -44,9 +44,9 @@ for i = 1:factorial(m)
 end
 
 p = count(count~=0) / sum(count);
-pe = -sum(p.*log2(p)) / factorial(m); %normalizada, log base 2
+pe_2 = -sum(p.*log2(p)) / log2(factorial(m)); %normalizada, log base 2
 end
-
+% Lehmer code
 function i = hash(x)
     % Devuelve un vector de indices de acuerdo a la permutacion (colwise):
     % Ej:
