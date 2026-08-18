@@ -19,34 +19,41 @@ function [S, H] = renyi_entropy(y, m, t, a)
 %   [S, H] = renyi_entropy(x, 3, 1, 4);
 % =========================================================================
 
+% Ensure input is a column vector
+y = y(:);
+
 ly = length(y);
 nV = ly - t*(m-1);   % Number of vectors
 
-% Building the vectors 
+% Building the embedding vectors 
 offsets = (0:t:t*(m-1))';   
 starts  = 1:nV;              
 idx = offsets + starts;     
 Y = y(idx);                  
 
 % Computing ordinal patterns
-[~, IV] = sort(Y,1);
+[~, IV] = sort(Y, 1);
 IV = IV';   % nV x m, a row = a permutation vector
 
-% Counting occurrences of each distinct permutation
-[~,~,ic] = unique(IV,'rows');
-c = accumarray(ic,1);
+% Correction: Map to ALL possible m! patterns (includes zeros)
+all_patterns = perms(1:m); 
+num_patterns = factorial(m);
 
-% Empirical probability distribution of the permutations
+[~, pattern_idx] = ismember(IV, all_patterns, 'rows');
+c = accumarray(pattern_idx, 1, [num_patterns, 1]);
+
+% Empirical probability distribution across the entire state-space
 p = c / sum(c);
-
-% Renyi entropy (ln version)
 if a == 1
-    S = -sum(p .* log(p)); %Shannon limit
+    % Shannon limit (a -> 1)
+    p_pos = p(p > 0);
+    S = -sum(p_pos .* log(p_pos)); %[cite: 5]
 else
-    S = (1/(1-a)) * log(sum(p.^a));
+    % Renyi Entropy calculation
+    S = (1 / (1 - a)) * log(sum(p.^a)); %[cite: 5]
 end
 
-% Normalized Renyi entropy
-H = S / log(factorial(m));
+% Renyi normalization constant remains ln(m!) for all alpha > 0
+H = S / log(num_patterns); 
 
 end

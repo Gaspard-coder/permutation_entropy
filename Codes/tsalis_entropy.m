@@ -10,13 +10,16 @@ function [S, H] = tsalis_entropy(y, m, t, q)
 %   q : positive real, tsalis order 
 %
 % Outputs:
-%   S : tsalis entropy S_a[P], computed with the natural logarithm (ln)
-%   H : Normalized tsalis entropy, H = S_a[P] / ln(m!), ranging in [0, 1].
+%   S : tsalis entropy S_q[P]
+%   H : Normalized tsalis entropy, ranging in [0, 1].
 %
 % Example:
 %   x = [4, 7, 9, 10, 6, 11, 3];
 %   [S, H] = tsalis_entropy(x, 3, 1, 4);
 % =========================================================================
+
+% Ensure column vector
+y = y(:);
 
 ly = length(y);
 nV = ly - t*(m-1);   % Number of vectors
@@ -31,21 +34,28 @@ Y = y(idx);
 [~, IV] = sort(Y,1);
 IV = IV';   % nV x m, a row = a permutation vector
 
-% Counting occurrences of each distinct permutation
-[~,~,ic] = unique(IV,'rows');
-c = accumarray(ic,1);
+% CORRECTION: Map to all possible m! patterns
+all_patterns = perms(1:m); 
+num_patterns = factorial(m);
 
-% Empirical probability distribution of the permutations
+[~, pattern_idx] = ismember(IV, all_patterns, 'rows');
+c = accumarray(pattern_idx, 1, [num_patterns, 1]);
+
+% Empirical probability distribution (includes zeros)
 p = c / sum(c);
-
-% tsalis entropy (ln version)
 if q == 1
-    S = -sum(p .* log(p)); %Shannon limit
+    % Shannon limit
+    p_pos = p(p > 0);
+    S = -sum(p_pos .* log(p_pos)); 
+    S_max = log(num_patterns);
 else
-    S = (1/(q-1))*(1-sum(p.^q));
+    % Tsallis entropy
+    S = (1/(q-1)) * (1 - sum(p.^q));
+    % Correct Tsallis maximum for uniform distribution
+    S_max = (1 - num_patterns^(1-q)) / (q-1);
 end
 
-% Normalized tsalis entropy
-H = S / log(factorial(m));
+% Normalized Tsallis entropy
+H = S / S_max;
 
 end

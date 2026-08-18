@@ -47,6 +47,17 @@ num_patterns = factorial(m);
 % Match the observed patterns against the full theoretical set
 [~, pattern_idx] = ismember(IV, all_patterns, 'rows');
 
+%==========================================
+% NB: to have a smaller computing time, you can use wisely the "unique" function
+% but it will not consider the pattern that appear zero times (ghost pattern for
+% too short signal) and you will have an incorrect probability distribution
+% So the alternativ is just:
+% IV = IV'; % N x m, a row = a permutation vector
+% [~,~,ic] = unique(IV,'rows'); % ic contains the indexes of each permutation
+%                               EACH TIME IT APPEARS!
+% c = accumarray(ic,1); %count the frequency of apparition of each index
+%==========================================
+
 % Count frequencies, forcing the output array to be size m! x 1
 c = accumarray(pattern_idx, 1, [num_patterns, 1]); 
 
