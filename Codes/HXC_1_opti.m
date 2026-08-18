@@ -21,54 +21,45 @@ function [pe, JSD, Comp_JS]=HXC_1_opti(data,m,t)
 % Ensure data is a column vector
 data = data(:);
 
-% Number of vectors
 ly = length(data);
 nV = ly - t*(m-1); 
-
-% 1. Extract delay embedding matrix (m x nV)
 offsets = (0:t:t*(m-1))'; 
 starts  = 1:nV;           
 idx = offsets + starts;   
 Y = data(idx); 
 
-% 2. Get ordinal patterns for each vector
+% Get ordinal patterns for each vector
 [~, IV] = sort(Y, 1);
 IV = IV'; % nV x m
 
-% 3. Map extracted patterns to ALL possible m! permutations
+% Map extracted patterns to all possible m! permutations
 all_patterns = perms(0:m-1); 
 num_patterns = factorial(m);
-
-% Convert permutations to linear index for fast matching
 [~, pattern_idx] = ismember(IV, all_patterns, 'rows');
 
-% Count pattern occurrences across ALL m! possibilities
 c = accumarray(pattern_idx, 1, [num_patterns, 1]); 
-p = c / sum(c); % Length is m!, including zeros
+p = c / sum(c); % Probabilistic distribution of the signal
 
-% 4. Compute Normalized Permutation Entropy (pe)
+% Compute Normalized Permutation Entropy (pe)
 entropy_max = log(num_patterns);
 p_pos = p(p > 0);
 pe = -sum(p_pos .* log(p_pos)) / entropy_max;
 
-% 5. Compute Jensen-Shannon Divergence (JSD)
-% Uniform distribution baseline
-u = 1 / num_patterns; 
+% Compute Jensen-Shannon Divergence (JSD)
+u = 1 / num_patterns; % Uniform distribution baseline
 
 % H((P + U) / 2)
 p_mix = 0.5 * p + 0.5 * u;
 H_mix = -sum(p_mix .* log(p_mix));
-
 % H(P)
 H_p = -sum(p_pos .* log(p_pos));
-
 % H(U)
 H_u = log(num_patterns);
 
 % JSD
 JSD = H_mix - 0.5 * H_p - 0.5 * H_u;
 
-% 6. Compute MPR Complexity (Comp_JS)
+% Compute MPR Complexity (Comp_JS)
 % Normalization constant Q_0
 c1 = (0.5 + ((1 - 0.5) / num_patterns)) * log(0.5 + ((1 - 0.5) / num_patterns));
 c2 = ((1 - 0.5) / num_patterns) * log((1 - 0.5) / num_patterns) * (num_patterns - 1);
