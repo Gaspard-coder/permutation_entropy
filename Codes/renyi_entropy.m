@@ -47,10 +47,10 @@ p = c / sum(c);
 if a == 1
     % Shannon limit (a -> 1)
     p_pos = p(p > 0);
-    S = -sum(p_pos .* log(p_pos)); %[cite: 5]
+    S = -sum(p_pos .* log(p_pos));
 else
     % Renyi Entropy calculation
-    S = (1 / (1 - a)) * log(sum(p.^a)); %[cite: 5]
+    S = (1 / (1 - a)) * log(sum(p.^a)); 
 end
 
 % Renyi normalization constant remains ln(m!) for all alpha > 0

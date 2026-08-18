@@ -33,7 +33,7 @@ Y = data(idx);
 IV = IV'; % nV x m
 
 % Map extracted patterns to all possible m! permutations
-all_patterns = perms(0:m-1); 
+all_patterns = perms(1:m); 
 num_patterns = factorial(m);
 [~, pattern_idx] = ismember(IV, all_patterns, 'rows');
 
