@@ -1,5 +1,5 @@
 t_array = 1:35;
-m = 5;
+m = 4;
 folder1 = './Data_base/Atrial_fibrillation/NSR';
 folder2 = './Data_base/Atrial_fibrillation/AFIB';
 
