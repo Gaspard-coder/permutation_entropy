@@ -96,7 +96,6 @@ end
     
     xlim([0 1]);
     
-    % FIXED: Safe dimension-agnostic maximum calculation
     max_c = max([C_max(:); C_values(:)]); 
     ylim([0 max_c * 1.1]);
 
