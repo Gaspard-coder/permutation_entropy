@@ -68,6 +68,9 @@ for m = m_array
     end
 end
 %Plotting
+[~, folder_name] = fileparts(data_folder);
+folder_name = string(data_folder);
+folder_name = extractAfter(folder_name, max(strfind(folder_name, filesep)));
 figure('Name', 'Complexity-Entropy Plane: Centroids with Theoretical Bounds', ...
            'Color', 'w', 'Position', [100, 100, 850, 650]);
     hold on; grid on;
@@ -119,8 +122,8 @@ figure('Name', 'Complexity-Entropy Plane: Centroids with Theoretical Bounds', ..
     % Formatting
     xlabel('Normalized Permutation Entropy (H)', 'FontSize', 12, 'FontWeight', 'bold');
     ylabel('Jensen-Shannon Complexity (C)', 'FontSize', 12, 'FontWeight', 'bold');
-    title('Centroid Positions on the Complexity-Entropy Plane', ...
-        'FontSize', 14, 'FontWeight', 'bold');
+    title(sprintf('Centroid Positions on the Complexity-Entropy Plane - %s', folder_name), ...
+    'FontSize', 14, 'FontWeight', 'bold');
     
     xlim([0 1]);
     ylim([0 max_c_val * 1.1]);
