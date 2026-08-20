@@ -1,4 +1,4 @@
-function [H_std1, C_std1, H_std2, C_std2] = HXC_standard_deviation_compare(m, t, data_folder1, data_folder2)
+function [H_mean1, C_mean1, H_mean2, C_mean2, H_std1, C_std1, H_std2, C_std2] = HXC_standard_deviation_compare(m, t, data_folder1, data_folder2)
 % =========================================================================
 % Compares two sets of signals on the Complexity-Entropy plane.
 % 
@@ -33,13 +33,13 @@ function [H_std1, C_std1, H_std2, C_std2] = HXC_standard_deviation_compare(m, t,
     h_cmax = plot(H_max, C_max, 'k-', 'LineWidth', 2, 'DisplayName', sprintf('C_{max} (m=%d)', m));
     h_cmin = plot(H_min, C_min, 'k--', 'LineWidth', 2, 'DisplayName', sprintf('C_{min} (m=%d)', m));
 
-    % B. Plot the area for Folder 1 (Light Blue)
-    h_area1 = scatter(H_vals1, C_vals1, 40, [0.4 0.7 0.9], 'filled', ...
+    % B. Plot the area for Folder 1 (Light Blue [0.4 0.7 0.9])
+    h_area1 = scatter(H_vals1, C_vals1, 40, 'blue' , 'filled', ...
         'MarkerFaceAlpha', 0.6, 'MarkerEdgeColor', 'none', ...
         'DisplayName', sprintf('Signals: %s', name1));
 
-    % C. Plot the area for Folder 2 (Light Coral/Red)
-    h_area2 = scatter(H_vals2, C_vals2, 40, [0.9 0.5 0.5], 'filled', ...
+    % C. Plot the area for Folder 2 (Light Coral/Red [0.9 0.5 0.5])
+    h_area2 = scatter(H_vals2, C_vals2, 40, 'red' , 'filled', ...
         'MarkerFaceAlpha', 0.6, 'MarkerEdgeColor', 'none', ...
         'DisplayName', sprintf('Signals: %s', name2));
 
