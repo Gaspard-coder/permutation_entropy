@@ -1,4 +1,4 @@
-function HXC_centroid(m_array,t_array, data_folder)
+function [centroids]=HXC_centroid(m_array,t_array, data_folder)
 % =========================================================================
 % The main idea is to study on the feature plan Complexity C vs Normalized
 % Shannon Entropy H how behave the centroid (in the mean way) of a set 
