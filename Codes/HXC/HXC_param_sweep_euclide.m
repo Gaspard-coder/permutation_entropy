@@ -1,4 +1,4 @@
-function HXC_param_sweep(t_array, m_array, folder1, folder2)
+function HXC_param_sweep_euclide(t_array, m_array, folder1, folder2)
 % =========================================================================
 % This function performs a 2D parameter sweep over embedding dimensions (m) 
 % and time embedding delays (t) to optimize class separation in the 
