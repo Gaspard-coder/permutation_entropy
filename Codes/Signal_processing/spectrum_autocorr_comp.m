@@ -1,4 +1,4 @@
-function spectrum_autocorr_comp(file1, file2)
+function [auc1,auc2]=spectrum_autocorr_comp(file1, file2)
 % =========================================================================
 % Loads two .mat files containing 1D time series and plots their 
 % Power Spectral Density (PSD) and Autocorrelation functions both 
@@ -7,6 +7,10 @@ function spectrum_autocorr_comp(file1, file2)
 % Input:
 %     file1 : path to the first .mat file
 %     file2 : path to the second .mat file
+%
+% Output:
+      % auc1: Area Under the Curve (Power) of file1
+      % auc2: Area Under the Curbe (Power) of file2
 % =========================================================================
 
 % Load data from .mat files
@@ -31,13 +35,25 @@ N1 = length(x1);
 fft1 = fft(x1 - mean(x1));
 psd1 = (abs(fft1).^2) / N1;
 f1 = (0:floor(N1/2)) / N1;
+psd1_onesided = psd1(1:floor(N1/2)+1);
 psd1_db = 10*log10(psd1(1:floor(N1/2)+1) + eps);
+
+% AUC Computation for File 1
+auc1 = bandpower(psd1_onesided, f1, 'psd');
 
 N2 = length(x2);
 fft2 = fft(x2 - mean(x2));
 psd2 = (abs(fft2).^2) / N2;
 f2 = (0:floor(N2/2)) / N2;
+psd2_onesided = psd2(1:floor(N2/2)+1);
 psd2_db = 10*log10(psd2(1:floor(N2/2)+1) + eps);
+
+% AUC Computation for File 2
+auc2 = bandpower(psd2_onesided, f2, 'psd');
+
+% Display AUC in command window
+fprintf('AUC Spectrum (%s): %.6f\n', name1, auc1);
+fprintf('AUC Spectrum (%s): %.6f\n', name2, auc2);
 
 % Common y-limits for PSD
 psd_min = min([psd1_db; psd2_db]);
