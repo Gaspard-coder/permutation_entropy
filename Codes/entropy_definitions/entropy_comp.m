@@ -1,7 +1,27 @@
 function [regular_e, renyi_list, tsalis_list] = entropy_comp(y,m,t,a_array, q_array)
-% ==============
-% Documentation
-% ==============
+% =========================================================================
+% Computation and comparison of permutation, Rényi, and Tsallis entropy
+% =========================================================================
+%
+% Input:
+%   y        : 1-dimensional input signal
+%   m        : embedding dimension
+%   t        : time delay
+%   a_array  : Rényi entropy parameter values to test
+%   q_array  : Tsallis entropy parameter values to test
+%
+% Output:
+%   regular_e  : permutation entropy of the signal
+%   renyi_list : Rényi entropy values corresponding to a_array
+%   tsalis_list: Tsallis entropy values corresponding to q_array
+%
+% The function computes the permutation entropy, Rényi entropy for each
+% value in a_array, and Tsallis entropy for each value in q_array.
+% It also plots the three entropy measures for comparison.
+%
+% Exemple:
+%   [pe, renyi, tsalis] = entropy_comp(y, 5, 1, 0.5:0.5:3, 0.5:0.5:3);
+% =========================================================================
 
 regular_e = permentropy_opti(y,m,t);
 renyi_list = zeros(size(a_array));
