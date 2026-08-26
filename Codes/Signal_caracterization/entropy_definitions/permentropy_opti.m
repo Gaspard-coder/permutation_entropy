@@ -51,7 +51,7 @@ num_patterns = factorial(m);
 % NB: to have a smaller computing time, you can use wisely the "unique" function
 % but it will not consider the pattern that appear zero times (ghost pattern for
 % too short signal) and you will have an incorrect probability distribution
-% So the alternativ is just:
+% If you are only interested in the entropy value, you can use:
 % IV = IV'; % N x m, a row = a permutation vector
 % [~,~,ic] = unique(IV,'rows'); % ic contains the indexes of each permutation
 %                               EACH TIME IT APPEARS!
