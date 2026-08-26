@@ -92,11 +92,11 @@ p_v_past_u_past = sum(p_3d, 1);        % p(vi_1, ui_tau)
 p_v_curr_v_past = sum(p_3d, 3);        % p(vi, vi_1)
 
 % Find non-zero entries for Transfer Entropy summation
-idx_nz = find(p_3d > 0);
-[i1, i2, i3] = ind2sub(size(p_3d), idx_nz);
+idx_nz = find(p_3d > 0); %index non zero
+[i1, i2, i3] = ind2sub(size(p_3d), idx_nz); %convert linear indices to matrix subscript
 
 te = 0;
-for k = 1:length(idx_nz)
+for k = 1:length(idx_nz) % Compute only non zero values
     curr_y = i1(k); % v_i
     past_y = i2(k); % v_{i-1}
     past_x = i3(k); % u_{i-tau}
