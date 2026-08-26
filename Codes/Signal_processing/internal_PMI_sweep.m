@@ -14,6 +14,7 @@ function [mi_array, mi_mean, mi_std] = internal_PMI_sweep(data_folder, m, t, var
 % Outputs:
 %   mi_array    - Vector (N x 1) of PMI values between var1 and var2 per file
 %   mi_mean     - Mean PMI across all files
+%   mi_std      - PMI standard deviation
 % =========================================================================
 
 % Get a list of all .mat files

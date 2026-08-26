@@ -1,4 +1,4 @@
-function [pte] = CPE(file1, file2, m, t, var1, var2)
+function [cpe] = CPE(file1, file2, m, t, var1, var2)
 % =========================================================================
 % CPE Computes Conditional Permutation Entropy H(Y|X)
 % from a signal X to a signal Y stored in .mat files.
@@ -14,7 +14,7 @@ function [pte] = CPE(file1, file2, m, t, var1, var2)
 %   var2  - (Optional) Variable name inside file2
 %
 % Output:
-%   pte   - Conditional Permutation Entropy H(Y|X) (in bits)
+%   cpe   - Conditional Permutation Entropy H(Y|X) (in bits)
 % =========================================================================
 
 if nargin < 5, var1 = ''; end
@@ -23,6 +23,6 @@ if nargin < 6, var2 = ''; end
 [~, h_x, ~, h_xy] = perm_mutual_info(file1, file2, m, t, var1, var2);
 
 % Compute Conditional Permutation Entropy H(Y|X)
-pte = h_xy - h_x;
+cpe = h_xy - h_x;
 
 end
