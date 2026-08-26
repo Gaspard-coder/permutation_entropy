@@ -1,4 +1,4 @@
-function [mi_array, mi_mean] = internal_PMI_sweep(data_folder, m, t, var1, var2)
+function [mi_array, mi_mean, mi_std] = internal_PMI_sweep(data_folder, m, t, var1, var2)
 % =========================================================================
 % INTERNAL_PMI_SWEEP Computes Permutation Mutual Information between two variables
 % of a .mat file for all .mat files in a specified folder, calculates their 
@@ -38,19 +38,25 @@ for k = 1:num_files
 end
 
 mi_mean = mean(mi_array); % Calculate global mean
+mi_std = std(mi_array);
 
 % =========================================================================
 % Plotting Section
 % =========================================================================
 figure('Name', 'internal PMI Sweep Results', 'NumberTitle', 'off', 'WindowStyle', 'normal');
 
-% Plot values as a bar chart
-bar(mi_array, 'FaceColor', [0.2, 0.4, 0.8]);
-hold on;
+% Shaded +/- 1 Std Dev Interval Area
+    x_fill = [0.5, num_files + 0.5, num_files + 0.5, 0.5];
+    y_fill = [mi_mean - mi_std, mi_mean - mi_std, mi_mean + mi_std, mi_mean + mi_std];
+    fill(x_fill, y_fill, [0.85, 0.4, 0.4], 'EdgeColor', 'none', 'FaceAlpha', 0.8);
+    hold on;
 
-% Add horizontal reference line for global mean
-yline(mi_mean, 'r--', sprintf('Mean PMI = %.4f', mi_mean), ...
-    'LineWidth', 1.5, 'LabelVerticalAlignment', 'bottom');
+    % Plot values as a bar chart
+    bar(mi_array, 'FaceColor', [0.2, 0.4, 0.8]);
+
+    % Add horizontal reference line for global mean
+    yline(mi_mean, 'r--', sprintf('Mean = %.4f (Std = %.4f)', mi_mean, mi_std), ...
+        'LineWidth', 1.5, 'LabelVerticalAlignment', 'bottom');
 
 % Configure X-axis with file names rotated to prevent overlapping text
 xticks(1:num_files);
@@ -66,7 +72,7 @@ ylabel('Permutation Mutual Information (bits)', 'FontWeight', 'bold');
 if isempty(folder_name)
     folder_name = data_folder; 
 end
-title(sprintf(' internal PMI Sweep — Folder: %s', folder_name), 'Interpreter', 'none');
+title(sprintf(' internal PMI Sweep — Folder: %s (m = %d, t = %d)', folder_name,m,t), 'Interpreter', 'none');
 
 grid on;
 box on;
