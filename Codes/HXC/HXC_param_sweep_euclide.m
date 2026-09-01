@@ -74,6 +74,15 @@ xticks(m_array);
 legend_labels = arrayfun(@(t) sprintf('t = %d', t), t_array, 'UniformOutput', false);
 legend(legend_labels, 'Location', 'bestoutside');
 
+figure('Color', 'w', 'Position', [200, 200, 700, 500], 'Name', 'Distance vs m (Standalone)');
+plot(m_array, dist, '-o', 'LineWidth', 1.5);
+grid on;
+xlabel('Embedding dimension (m)', 'FontSize', 11);
+ylabel('Distance between centroids', 'FontSize', 11);
+title('Distance vs m for each fixed t', 'FontSize', 12, 'FontWeight', 'bold');
+xticks(m_array);
+legend(legend_labels, 'Location', 'bestoutside');
+
 end
 
 %% Helper Function: Process a single folder

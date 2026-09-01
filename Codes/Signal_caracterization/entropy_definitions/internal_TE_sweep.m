@@ -1,4 +1,4 @@
-function [te_array, te_mean, te_std] = internal_TE_sweep(data_folder, m, t, var1, var2)
+    function [te_array, te_mean, te_std] = internal_TE_sweep(data_folder, m, t, var1, var2)
 % =========================================================================
 % TE_sweep Computes Transfer Entropy
 % from a signal X to a signal Y stored in .mat files.
