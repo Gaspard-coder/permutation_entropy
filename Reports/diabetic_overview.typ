@@ -55,6 +55,7 @@
 == Materials 
 For this project, we are using the following materials:
 - DBT2 and NDBT2, 2 datasets of 20 diabetics and non diabetics patients each. The .mat files are composed of the glucose concentration *G* vs time (T#sub[sample] = 15min ie F#sub[sample] = 1/900 Hz) and the "food activity" *S* vs time, linked to the alimentation of each patient.
+// How is defined the food activity ?
 - The permutation entropy and all its derivate concepts. We will use MATLAB and the EntropyHUB library as well as homemade code made by Dr. Walter Legnani and its students.
 
 == Goals and plan
@@ -73,7 +74,7 @@ We can build the plan of the project as follows:
 == CxH Feature plan
 
 To find the most relevant embedding dimension (*m*) and embedding time delay (*$tau$*), we first focused on the evolution of glucose's concentration over time. We used the standard Complexity-Entropy feature plan in order to find the combination that splits the most the two classes of patients. To be more precise, we used the MPR Complexity denoted C and the normalized permutation entropy denoted H.
-
+// Need more definition ?
 
 == Finding the parameters
 
@@ -123,6 +124,7 @@ We can furthermore compute the standard deviation around the centroids to be sur
 Now that we have found a satisfying set of parameters, we have to find metrics that link *G* and *S* and show different behaviors between diabetic and non-diabetic patients.
 
 == Mutual information
+// Maybe need a little definition
 To have an idea of the quantity of information shared between *G* and *S*, we computed with `internal_PMI_sweep.m` the mutual information of each patient and the mean mutual information of each class :
 
 #figure(
@@ -153,6 +155,7 @@ To have an idea of the quantity of information shared between *G* and *S*, we co
 ]
 
 == Transfer entropy
+// Little definition also
 To go further on the characterisation of the correlation between *G* and *S*, we computed the transfer permutation entropy in order to measure the directed transfer of information between the two signals *G* and *S*, using the `internal_TE_sweep.m` function :
 
 #figure(
@@ -184,7 +187,7 @@ To go further on the characterisation of the correlation between *G* and *S*, we
 #highlight(fill : aqua)[To be continued...]
 = To try next
 == Multi-dimensional
-- 2-D Permutation Entropy (see EntropyHUB)
+- 2-D Permutation Entropy (see EntropyHUB) //see in the documentation how it's defined
 
 == Mono-dimensional
 On the glucose concentration ?
