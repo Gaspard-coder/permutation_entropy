@@ -186,6 +186,65 @@ To go further on the characterisation of the correlation between *G* and *S*, we
 
 #highlight(fill : aqua)[To be continued...]
 
+#pagebreak()
+== Weighted permutation entropy
+By plotting the signals of the glucose concentration for healty and diabetic patients, we observed that the signal amplitude is bigger 
+for the diabetic group. We then tried to compute the WHXC feature plan which stand for Weighted HxC feature plan, using the weighted permutation entropy as defined in *"Weighted-permutation entropy: A complexity measure for
+time series incorporating amplitude information"* by B. Fadlallah, B. Chen, A. Keil and J. Príncipe.
+
+As we used a new definition of the permutation entropy, we had to find new (m,$tau$) parameters that maximize the distance between the two classes:
+
+#figure(
+  image("figures/WPE_best_distance_diabet.png", width: 100%),
+  caption: [Weighted HxC feature plan of the centroids of the diabetic dataset]
+)
+
+As shown, the two best sets of parameters seem to be (m = 5, $tau$ = 2) and (m = 4, $tau$ = 2):
+
+#figure(
+  image("figures/Complexity-Weigthed Entropy Plane: Comparison 5-2.png", width: 120%),
+  caption: [Comparison of the weighted permutation entropy for the m = 5 and $tau$ = 2]
+)
+
+#figure(
+  image("figures/Complexity-Weigthed Entropy Plane: Comparison 4-2.png", width: 120%),
+  caption: [Comparison of the weighted permutation entropy for the m = 4 and $tau$ = 2]
+)
+
+Nb : discontinuity in the theoritical max complexity are due to MATLAB overlapping plots.
+
+Here we observe an interesting behavior: (5,2) configuration gives the maximum distance between the two classes of patients but the (4,2) configuration shows a more satisfying space distribution.
+By more satisfying, we mean that the two clouds of points respectively lie in areas consistent with their signal type (a changing mix between random and chaotic).
+
+#rslt[
+  For the rest of the study, we will use (m = 4, $tau$ = 2) set of parameters to compute the weighted permutation entropy and its associated complexity, as it better reflects the nature of the signals.
+]
+
+#nb[
+  This criteria of computing the euclidean distance between the centroids to find the best set of parameters seems a bit too naive if used alone. We might include the standard deviation but maybe also some thresholds to ensure each centroid's group stays in an
+  area consistent with their physical behavior.
+]
+
+== Lyapunov exponent
+In order to find others metrics to feed the feature space of the classifier, we also computed the average lyapnuov exponent of each class, using the glucose concentration:
+
+#figure(
+  table(
+    columns: (1fr, 1fr, 1fr),
+    table.header([*Group of patient*], [*Mean Lyapunov exponent*], [*Standard deviation*]),
+    [Diabetic], [0.000278],[0.000162],
+    [Non-diabetic], [ 0.000203], [0.000123]
+  ),
+  caption: [Mean Lyapunov exponent for each group of patient with the samping frequency f#sub[s] = 1/900 Hz]
+)
+
+#rslt[
+  It seems that the lyapunov exponent is in this case not a relevant metric to distinguish the two classes.
+
+]
+
+== Higuchi's fractal dimension
+We also computed the fractal dimension of the glucose concentration using Higuchi's method:
 
 
 
@@ -199,4 +258,3 @@ On the glucose concentration ?
 - Fourier Spectrum
 - AUC (power density)
 - Fractal dimension (with Higuchi's method)
-- Lyapunov exponent

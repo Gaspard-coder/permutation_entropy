@@ -9,7 +9,7 @@ function [lp] = lyapunov_exponent(file,sample_frequency)
 %     sample_frequency: frequency of acquisition of the studied signal
 % 
 % Output:
-%     lp: lyapuno exponent
+%     lp: lyapunov exponent
 % =====
 if ischar(file) || isstring(file)
     loadedData = load(file);
