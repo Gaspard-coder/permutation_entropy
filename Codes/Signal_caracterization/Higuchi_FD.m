@@ -5,7 +5,7 @@ function [FD] = Higuchi_FD(k_max,signal)
 % for different timescales of the k_max
 % =======
 % Input:
-%     k_max: the maximum timescale to be tried
+%     k_max: the maximum timescale to be tried. NEED TO BE > 1
 %     signal: .mat file to be computed
 % 
 % Output:
