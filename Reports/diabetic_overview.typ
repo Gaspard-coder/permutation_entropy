@@ -225,6 +225,9 @@ By more satisfying, we mean that the two clouds of points respectively lie in ar
   area consistent with their physical behavior.
 ]
 
+#highlight(fill : aqua)[What to do next? Try to compute the mutual information and transfer entropy using this type WPE?]
+
+
 == Lyapunov exponent
 In order to find others metrics to feed the feature space of the classifier, we also computed the average lyapnuov exponent of each class, using the glucose concentration:
 
@@ -246,8 +249,19 @@ In order to find others metrics to feed the feature space of the classifier, we 
 == Higuchi's fractal dimension
 We also computed the fractal dimension of the glucose concentration using Higuchi's method:
 
+#figure(
+  table(
+    columns: (1fr, 1fr, 1fr),
+    table.header([*Group of patient*], [*Mean Fractal Dimension*], [*Standard deviation*]),
+    [Diabetic], [1.1540],[0.0453],
+    [Non-diabetic], [ 1.2737], [0.0124]
+  ),
+  caption: [Mean Fractal Dimension for each group of patient with the max depth k#sub[max] = 2]
+)
 
-
+#rslt[
+  This time also, the fractal dimension computed with Higuchi's method does not seem to be a relevant metric to distinguish the two classes.
+]
 
 = To try next
 == Multi-dimensional
@@ -257,4 +271,3 @@ We also computed the fractal dimension of the glucose concentration using Higuch
 On the glucose concentration ?
 - Fourier Spectrum
 - AUC (power density)
-- Fractal dimension (with Higuchi's method)
