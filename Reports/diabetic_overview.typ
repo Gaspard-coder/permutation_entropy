@@ -185,6 +185,11 @@ To go further on the characterisation of the correlation between *G* and *S*, we
 ]
 
 #highlight(fill : aqua)[To be continued...]
+
+
+
+
+
 = To try next
 == Multi-dimensional
 - 2-D Permutation Entropy (see EntropyHUB) //see in the documentation how it's defined
