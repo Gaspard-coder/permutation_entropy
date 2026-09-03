@@ -1,4 +1,4 @@
-% =========================================================================
+    % =========================================================================
 %  Calculo de la entropia de permutacion ponderada
 %  Centro de Procesamiento de Señales e Imágenes
 % Input
@@ -21,7 +21,7 @@
 % Agregado peso
 % =========================================================================
 
-function [pe pe_2 pe_norm] = permutation_entropy_w_fast(y,m,t)
+function [pe, pe_2, pe_norm] = permutation_entropy_w_fast(y,m,t)
 len_y = length(y);
 
 % Genero las particiones

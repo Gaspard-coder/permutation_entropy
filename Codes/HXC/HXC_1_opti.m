@@ -66,7 +66,7 @@ c2 = ((1 - 0.5) / num_patterns) * log((1 - 0.5) / num_patterns) * (num_patterns 
 c3 = 0.5 * log(num_patterns);
 Q_0 = -1 / (c1 + c2 + c3);
 
-% MPR Complexity
+% MPR Complexity with normalized PE
 Comp_JS = Q_0 * JSD * pe;
 
 end
