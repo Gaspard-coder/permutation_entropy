@@ -242,12 +242,16 @@ In order to find others metrics to feed the feature space of the classifier, we 
 )
 
 #rslt[
-  It seems that the lyapunov exponent is in this case not a relevant metric to distinguish the two classes.
+  At first sight, it seems that the lyapunov exponent is in this case not a relevant metric to distinguish the two classes. However, the standard deviation is too high for now to really conclude anything.
 
 ]
 
+#nb[
+  How to better the standard deviation? Change the Lyapunov matlab function?
+]
+
 == Higuchi's fractal dimension
-We also computed the fractal dimension of the glucose concentration using Higuchi's method:
+We also computed the fractal dimension of the glucose concentration using Higuchi's method. The question then is which depth k#sub[max] to use. Here for k#sub[max] = 2, corresponding to a evolution of 30min:
 
 #figure(
   table(
@@ -256,11 +260,22 @@ We also computed the fractal dimension of the glucose concentration using Higuch
     [Diabetic], [1.1540],[0.0453],
     [Non-diabetic], [ 1.2737], [0.0124]
   ),
-  caption: [Mean Fractal Dimension for each group of patient with the max depth k#sub[max] = 2]
+  caption: [Mean Fractal Dimension for each group of patient\ with the max depth k#sub[max] = 2]
+)
+
+The time of observation seemed a bit too short to distinguish different behaviors. We tried bigger time windows:
+
+#figure(
+  image("figures/Fractal Dimension Sweep.png", width: 110%),
+  caption: [Mean Fractal Dimension for each group of patient with different max depth k#sub[max]]
 )
 
 #rslt[
-  This time also, the fractal dimension computed with Higuchi's method does not seem to be a relevant metric to distinguish the two classes.
+After k#sub[max] = 6, which corresponds to a time window of 1h30, we seems to have reached a stationnary difference between diabetic and non-diabetic patients of around 0.2603.
+]
+
+#nb[
+  The standard deviations are not overlapping but is this difference enough to be used in the feature set?
 ]
 
 = To try next
