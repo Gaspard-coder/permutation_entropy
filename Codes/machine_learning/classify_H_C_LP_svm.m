@@ -1,4 +1,4 @@
-function [SVMModel, Features_Healthy, Features_Sick] = classify_H_C_LP_svm(folder_healthy, folder_sick, m, t, sample_frequency)
+function [SVMModel, Features_Healthy, Features_Sick, X, Y,labelled_values] = classify_H_C_LP_svm(folder_healthy, folder_sick, m, t, sample_frequency)
 % CLASSIFY_H_C_LP_SVM Batch processes healthy and sick datasets to extract a
 % 3D feature space: Permutation Entropy (H), MPR Complexity (C), and Lyapunov
 % Exponent (LP). Trains a 3D Linear SVM with standardization, de-standardizes
@@ -54,6 +54,7 @@ X = [Features_Healthy; Features_Sick];            % Feature Matrix (N x 3)
 Y = [ones(size(Features_Healthy, 1), 1); ...
     -ones(size(Features_Sick, 1), 1)];            % Labels: +1 (Healthy), -1 (Sick)
 
+labelled_values = [X,Y];
 % Train 3D Linear SVM with standardization across all 3 features
 SVMModel = fitcsvm(X, Y, ...
     'KernelFunction', 'linear', ...

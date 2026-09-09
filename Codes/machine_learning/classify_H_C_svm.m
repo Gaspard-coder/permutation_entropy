@@ -1,4 +1,4 @@
-function [SVMModel, Features_Healthy, Features_Sick] = classify_H_C_svm(folder_healthy, folder_sick, m, t)
+function [SVMModel, Features_Healthy, Features_Sick,labelled_values] = classify_H_C_svm(folder_healthy, folder_sick, m, t)
 % CLASSIFY_H_C_SVM Processes healthy and sick datasets to compute the
 % Complexity-Entropy Causality plane coordinates (H and C) and trains
 % a 2D Linear SVM to find the optimal separating hyperplane.
@@ -46,6 +46,7 @@ X = [Features_Healthy; Features_Sick];            % Feature Matrix (N x 2)
 Y = [ones(size(Features_Healthy, 1), 1); ...
     -ones(size(Features_Sick, 1), 1)];            % Labels: +1 (Healthy), -1 (Sick)
 
+labelled_values = [X,Y];
 % Train 2D linear SVM
 SVMModel = fitcsvm(X, Y, ...
     'KernelFunction', 'linear', ...
