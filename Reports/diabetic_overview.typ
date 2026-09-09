@@ -246,8 +246,23 @@ In order to find others metrics to feed the feature space of the classifier, we 
 
 ]
 
-#nb[
-  How to better the standard deviation? Change the Lyapunov matlab function?
+=== Emphasizing variations
+We already observed that the biggest difference between sick and healthy subjects lie in the variability and peaks in the glucose blood density.
+
+Given that, we tried to substract the mean value of each signal before calcultation in order to compute Lyapunov exponent mainly on the variations :
+
+#figure(
+  table(
+    columns: (1fr, 1fr, 1fr),
+    table.header([*Group of patient*], [*Mean Lyapunov exponent on sub-mean signals*], [*Standard deviation*]),
+    [Diabetic], [0.000405],[0.000031],
+    [Non-diabetic], [ 0.000285], [0.000021]
+  ),
+  caption: [Mean Lyapunov exponent on sub-mean signals for each group of patient with the samping frequency f#sub[s] = 1/900 Hz]
+)
+
+#rslt[
+  With a standard deviation of around 7% of the value, we can now distinguish the group without overlapping values!
 ]
 
 == Higuchi's fractal dimension
@@ -276,6 +291,23 @@ After k#sub[max] = 6, which corresponds to a time window of 1h30, we seems to ha
 
 #nb[
   The standard deviations are not overlapping but is this difference enough to be used in the feature set?
+]
+
+=== Emphasizing variations
+We also tried to compute the fractal dimension on the sub-mean signals, in order to achieve the same goal as before:
+
+#figure(
+  table(
+    columns: (1fr, 1fr, 1fr),
+    table.header([*Group of patient*], [*Mean Fractal Dimension on sub-mean signals*], [*Standard deviation*]),
+    [Diabetic], [1.2832],[0.06],
+    [Non-diabetic], [ 1.5478], [0.02]
+  ),
+  caption: [Mean Fractal Dimension on sub-mean signals for each group of patient with the samping frequency f#sub[s] = 1/900 Hz]
+)
+
+#rslt[
+  The standard deviations now are not overlapping, and the difference in fractal dimension between the two groups is significant.
 ]
 
 = To try next
