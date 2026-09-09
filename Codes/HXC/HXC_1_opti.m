@@ -12,7 +12,7 @@ function [pe, JSD, Comp_JS]=HXC_1_opti(data,m,t)
 %     t: embedding time delay to compute pe as well
 % 
 % Output:
-%     pe2_normalized: normalized Shannon entropy H in log in order to fit
+%     pe: normalized Shannon entropy H in log in order to fit
 %     in [0;1] interval
 %     JSD: Jansen Shannon Divergence to compute disequilibrium
 %     Comp_JS: MPR complexity 
