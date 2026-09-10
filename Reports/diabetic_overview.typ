@@ -311,13 +311,23 @@ We also tried to compute the fractal dimension on the sub-mean signals, in order
 ]
 
 = SVM training for classification
-10 times cross-validation on auto-optimized kernel from `fitcsvm` function.
+10 times cross-validation on auto-optimized kernel from `fitcsvm` function. First on the HxC feature plan and then in 3D adding the Lyapunov exponent.
 
 #rslt[
   Cloud of points in HxC feature already well splitted, not able to find enough criterias to select the best hyperplan.
 ]
 
 = Kmean algorithm
+To find a more simple method of classification, we applied the Kmeans algorithm on the HxC feature plane. We used the regular euclidean distance and the `Replicates,5` argument to try different initial cluster positions: 
+
+#figure(
+  image("figures/HxC K-Means Performance.png", width: 120%),
+  caption: [Kmeans algorithm applied on the HxC feature plane]
+)
+
+#rslt[
+  At least for the DBT2/NDBT2 datasets, the Kmeans algorithm is able to find a good separation between the two classes of patients.
+]
 
 
 = To try next
