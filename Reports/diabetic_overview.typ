@@ -310,6 +310,16 @@ We also tried to compute the fractal dimension on the sub-mean signals, in order
   The standard deviations now are not overlapping, and the difference in fractal dimension between the two groups is significant.
 ]
 
+= SVM training for classification
+10 times cross-validation on auto-optimized kernel from `fitcsvm` function.
+
+#rslt[
+  Cloud of points in HxC feature already well splitted, not able to find enough criterias to select the best hyperplan.
+]
+
+= Kmean algorithm
+
+
 = To try next
 == Multi-dimensional
 - 2-D Permutation Entropy (see EntropyHUB) //see in the documentation how it's defined
