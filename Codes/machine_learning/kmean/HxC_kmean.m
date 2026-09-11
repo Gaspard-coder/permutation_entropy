@@ -1,7 +1,23 @@
-function [D, means, stds, acc, F1, sensitivity, specificity] = HxC_kmean(folder_healthy, folder_sick, m, t, k)
+function [D,C, means, stds, acc, F1, sensitivity, specificity] = HxC_kmean(folder_healthy, folder_sick, m, t, k)
 % =========================================================================
 % Batch processes healthy (+1) and sick (-1) datasets, runs k-means in the 
 % HxC feature space, and characterizes clustering performance and point distances.
+% =========================================================================
+% Input:
+%   - folder_healthy   : Path to folder containing healthy patient data
+%   - folder_sick      : Path to folder containing sick patient data
+%   - m, t             : Permutation entropy parameters
+%   - k                : number of clusters to be used in kmeans algorithm
+%
+% Output:
+%   -D
+%   -C            : Clusters coordinates
+%   - means
+%   - stds
+%   - acc         : Balanced accuracy [0, 1]
+%   - F1          : F1-score [0, 1]
+%   - sensitivity : True Positive Rate [0, 1]
+%   - specificity : True Negative Rate [0, 1]
 % =========================================================================
 
 % Data extraction and computing via local helper function

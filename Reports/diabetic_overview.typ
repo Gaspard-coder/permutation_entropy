@@ -354,6 +354,8 @@ On the glucose concentration ?
 #pagebreak()
 
 = Cross-checking with new database
+
+== Confirming (m,$tau$) parameters
 To now test the robustness of our classification model, we tried to apply our metrics on a new database : 
 
 CGMacros v1.0.0 — PhysioNet · doi:10.13026/3z8q-x658 · Gutiérrez-Osuna, Kerr, Mortazavi y Das (2025) ·
@@ -420,7 +422,7 @@ Results are much better with the libre probe:
 #figure(
   table(
   columns: (1fr, 1fr, 1fr,1fr,1fr),
-  table.header([*Prob*],[*Accuracy*], [*F1-score*], [*Sensibility*], [*Specificity*]),
+  table.header([*Probe*],[*Balanced Accuracy*], [*F1-score*], [*Sensibility*], [*Specificity*]),
   [*Dexcom*], [0.79],[0.81],[0.87],[0.71],
   [*Libre*], [0.90], [0.90], [0.87], [0.93],
   [*Average quality*], [*0.845*], [*0.855*], [*0.87*], [*0.82*]
@@ -430,4 +432,45 @@ Results are much better with the libre probe:
 
 #rslt[
   Despite a greater spread in the cloud points, the Kmeans algorithm using Shannon entropy with *(m=5, $tau$=2)* parameters is still able to find a good separation between the two classes of patients. The classification performance is even better with the libre probe than with the dexcom probe.
+]
+
+== Checking clusters reusability
+The next goal here is to see if the centroids of the clusters found with the Kmeans algorithm on the DBT2/NDBT2 datasets are still relevant to classify the CGMacros dataset. 
+
+#figure(
+  table(
+    columns: (1fr, 1fr, 1fr),
+    table.header([*Group*],[*H*], [*C*]),
+    [*Diabetic*], [0.9518],[0.0791],
+    [*Non-Diabetic*], [0.8303], [0.2189]
+  ),
+  caption : [Centroids coordinates for each group from the DBT2/NDBT2 database]
+)
+
+
+We then computed the distance between each point of the CGMacros datasets and the two centroids found with the Kmeans algorithm on the DBT2/NDBT2 datasets:
+
+#figure(
+  image("figures/Centroid Validation in HxC Plane dexcom.png", width: 100%),
+  caption: [Distance to cluster centroids of the CGMacros dataset with dexcom probe]
+)
+
+#figure(
+  image("figures/Centroid Validation in HxC Plane libre.png", width: 100%),
+  caption: [Distance to cluster centroids of the CGMacros dataset with libre probe]
+)
+
+#figure(
+  table(
+  columns: (1fr, 1fr, 1fr,1fr,1fr),
+  table.header([*Probe*],[*Balanced Accuracy*], [*F1-score*], [*Sensibility*], [*Specificity*]),
+  [*Dexcom*], [0.83],[0.81],[0.73],[0.93],
+  [*Libre*], [0.93], [0.93], [0.87], [1],
+  [*Average quality*], [*0.88*], [*0.87*], [*0.775*], [*0.965*]
+  ),
+  caption: [Classification performance of the Kmeans clusters of the DBT2/NDBT2 dataset applied to the CGMacros dataset with dexcom and libre probes]
+)
+
+#rslt[
+  Using the first set of centroids, we can still classify the CGMacros dataset with quality metrics similar than running the Kmeans algorithm directly on the CGMacros dataset.
 ]
