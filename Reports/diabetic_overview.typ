@@ -40,6 +40,17 @@
     #text(weight: "bold")[Result :] #body
   ],
 )
+
+#let impt(body) = block(
+  fill: rgb("#fc9494"),
+  stroke: (paint: rgb("#ff1900"), thickness: 1.2pt),
+  radius: 6pt,
+  inset: 12pt,
+  width: 100%,
+  [
+    #text(weight: "bold")[Important :] #body
+  ],
+)
 #align(right)[
   #datetime.today().display("Last version : [day]/[month]/[year]")
 ]
@@ -329,6 +340,7 @@ To find a more simple method of classification, we applied the Kmeans algorithm 
   At least for the DBT2/NDBT2 datasets, the Kmeans algorithm is able to find a good separation between the two classes of patients.
 ]
 
+#highlight(fill : yellow)[need to add the current distance]
 
 = To try next
 == Multi-dimensional
@@ -338,3 +350,84 @@ To find a more simple method of classification, we applied the Kmeans algorithm 
 On the glucose concentration ?
 - Fourier Spectrum
 - AUC (power density)
+
+#pagebreak()
+
+= Cross-checking with new database
+To now test the robustness of our classification model, we tried to apply our metrics on a new database : 
+
+CGMacros v1.0.0 — PhysioNet · doi:10.13026/3z8q-x658 · Gutiérrez-Osuna, Kerr, Mortazavi y Das (2025) ·
+licencia CC BY-NC-SA 4.0
+
+Producto: 45 archivos .mat repartidos en MAT\NDBT2, MAT\PDBT2 y MAT\DBT2
+
+It is also important to notice that this time the technicians used two probes to measure the glucose concentration, called `dexcom` and `libre`. We can then double the process of verification.
+
+#impt[
+  This time, the sampling frequency is one point every minute so we need to do a quick downsample in order to compare every data on a 15-minute point basis
+]
+
+Let's see first how the points behave on the HxC feature plane. For now he still use *(m = 5, $tau$ = 2)* :
+
+#figure(
+  image("figures/Complexity-Entropy Plane: Comparison dexcom.png", width: 120%),
+  caption: [HxC feature plan of the centroids of the CGMacros dataset with dexcom probe]
+)
+
+#figure(
+  image("figures/Complexity-Entropy Plane: Comparison libre.png", width: 120%),
+  caption: [HxC feature plan of the centroids of the CGMacros dataset with libre probe]
+)
+
+As we still observe a good separation bet ween the two classes, we got a bigger variability within each group which may disturb the classification:
+
+#figure(
+  table(
+    columns: (1fr, 1fr, 1fr),
+    table.header([*Group of\ patient+probe*], [*Shannon entropy (mean $plus.minus$ std)*], [*Complexity (mean $plus.minus$ std)*]),
+    [Diabetic + Dexcom], [0.8161 $plus.minus$ 0.0533 ],[0.2103 $plus.minus$ 0.0357],
+    [Non-diabetic + Dexcom], [0.9129 $plus.minus$ 0.0495], [0.1144 $plus.minus$ 0.0485],
+    [Diabetic + Libre], [0.8164 $plus.minus$ 0.0421],[0.2244 $plus.minus$ 0.0302],
+    [Non-diabetic + Libre], [0.9155 $plus.minus$ 0.0591], [0.1147 $plus.minus$ 0.0491]
+  ),
+  caption: [Mean and standard deviation of the Shannon entropy and complexity for each group of patient depending of the probde]
+)
+#pagebreak()
+With the regular Kmeans algorithm we obtain:
+
+#figure(
+  image("figures/HxC K-Means Classification dexcom.png", width: 95%),
+  caption: [Kmeans algorithm applied on the HxC feature plane of the CGMacros dataset with dexcom probe]
+)
+
+#figure(
+  image("figures/Distance to Cluster Centroids dexcom.png", width: 100%),
+  caption: [Distance to cluster centroids of the Kmeans algorithm applied on the HxC feature plane of the CGMacros dataset with dexcom probe]
+)
+
+Results are much better with the libre probe:
+
+#figure(
+  image("figures/HxC K-Means Classification libre.png", width: 95%),
+  caption: [Kmeans algorithm applied on the HxC feature plane of the CGMacros dataset with libre probe]
+)
+
+#figure(
+  image("figures/Distance to Cluster Centroids libre.png", width: 100%),
+  caption: [Distance to cluster centroids of the Kmeans algorithm applied on the HxC feature plane of the CGMacros dataset with libre probe]
+)
+
+#figure(
+  table(
+  columns: (1fr, 1fr, 1fr,1fr,1fr),
+  table.header([*Prob*],[*Accuracy*], [*F1-score*], [*Sensibility*], [*Specificity*]),
+  [*Dexcom*], [0.79],[0.81],[0.87],[0.71],
+  [*Libre*], [0.90], [0.90], [0.87], [0.93],
+  [*Average quality*], [*0.845*], [*0.855*], [*0.87*], [*0.82*]
+  ),
+  caption: [Classification performance of the Kmeans algorithm applied on the HxC feature plane of the CGMacros dataset with dexcom and libre probes]
+)
+
+#rslt[
+  Despite a greater spread in the cloud points, the Kmeans algorithm using Shannon entropy with *(m=5, $tau$=2)* parameters is still able to find a good separation between the two classes of patients. The classification performance is even better with the libre probe than with the dexcom probe.
+]
