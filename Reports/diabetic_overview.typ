@@ -474,3 +474,29 @@ We then computed the distance between each point of the CGMacros datasets and th
 #rslt[
   Using the first set of centroids, we can still classify the CGMacros dataset with quality metrics similar than running the Kmeans algorithm directly on the CGMacros dataset.
 ]
+
+= Complementary approach: combining all the databases
+In order to have a more robust classification model, we combined all databases and see how good could we classified them:
+
+#figure(
+  image("figures/Complexity-Entropy Plane: Comparison all.png", width: 120%),
+  caption: [HxC feature plan of the centroids of the combined datasets]
+)
+
+Despite of the greater number of points, the variability within each class is still low enough to have a good separation between the two classes of patients. We can then try to classify:
+
+#figure(
+  image("figures/HxC K-Means Classification all.png", width: 100%),
+  caption: [Kmeans algorithm applied on the HxC feature plane of the combined datasets]
+)
+
+We can also add the Fractal Dimension to see if we can improve any metrics:
+
+#figure(
+  image("figures/HxCxFD K-Means Classification all.png", width: 120%),
+  caption: [Kmeans algorithm applied on the HxCxFD feature plane of the combined datasets]
+)
+
+#rslt[
+  For over 90% for each metrics, the Kmeans algorithm on the HxC feature plane with (m=5, $tau$=2) seems to be a good candidate for a simple and robust classification model.
+]
