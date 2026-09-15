@@ -539,7 +539,7 @@ It leads to the test of 4*3*5*4 = 240 different combinations of parameters. We t
     ),
 
     [Best\ Balanced Accuracy], [`cosine`], [100], [1], [`plus`],
-    table.cell(fill: rgb("fef08a"))[*0.92*], [0.92], [0.92], [0.93],
+    table.cell(fill: rgb("fef08a"))[*0.93*], [0.92], [0.92], [0.93],
 
     [Best\ F1-score], [`sqeuclidean`], [1000], [1], [`plus`],
     [0.93], table.cell(fill: rgb("fef08a"))[*0.93*], [0.92], [0.94],
@@ -553,7 +553,7 @@ It leads to the test of 4*3*5*4 = 240 different combinations of parameters. We t
   caption: [Top configurations by metric]
 )
 More exactly, it appears that numerous configurations lead to the same best metrics, so we indicated in this table an example of best configuration for each metric trying also to optimize the others.
-We can also notice that by looking for the best F1-score, we reached one more time what seems to be the best performances taht we got before: 
+We can also notice that we reached one more time what seems to be the best performances taht we got before: 
 #align(center)[*Balanced Accuracy = 0.93, F1-score = 0.93, Sensibility = 0.92\ and Specificity = 0.94*]
 
 To ensure this result, we looked for for a configuration matchin all 4 best metrics. Unfortunately, this configuration does not exist, at least for the tested parameters. 
@@ -562,12 +562,33 @@ We then selected the configuration that hit 3 out of 4 best metrics. This time, 
 
 We can then draw this first draft of parameters selection politic:
 - Distance metric: `cosine and sqeucliean` are the best candidates
-- Maximum of Iteration: we managed to reach the best metrics with 100, 1000 and 5000 iterations, so we can keep the default value of 100
-- Replicates: the occurances of 1,2,3,4 or 5 are almost the same, so we can keep the default value of 1 as well.
-- Starting cluster centroid: the four forms occur almost the same, so we can keep the default value of `plus` as well.
+- Maximum of Iteration: we managed to reach the best metrics with 100, 1000 and 5000 iterations.
+- Replicates: the occurances of 1,2,3,4 or 5 are almost the same.
+- Starting cluster centroid: the four forms occur almost the same.
 
 #rslt[
   This first optimization of the Kmeans algorithm shows that we can reach a good classification performance with a simple configuration, the parameter that seems to have the most impact is the distance metric, with `cosine` and `sqeuclidean` being the best candidates.
 
   The complete table of best configurations can be generated using the `HxC_sweep_kmean.m` script.
 ]
+
+= Final step : classifying a third database
+We have got efficient (m,$tau$) parameters to compute permutation entropy as well as good parameters to wisely run Kmeans algorithm. The last step is to check if we can classify a third database with the same parameters and the centroids found with the Kmeans algorithm on the combined datasets.
+
+First step is to fix the parameters. We will use obviously the (m=5, $tau$=2) parameters to compute the permutation entropy and the following Kmeans parameters:
+- Distance metric: `cosine`
+- Maximum of Iteration: 100
+- Replicates: 1
+- Starting cluster centroid: `plus`
+as it is one of the configuration that hit 3 out of 4 best metrics and does not need much computation time
+
+We obtain:
+#figure(
+  table(
+    columns: (1fr, 1fr, 1fr),
+    table.header([*Group*],[*H*], [*C*]),
+    [*Diabetic*], [0.8171],[0.2201],
+    [*Non-Diabetic*], [0.9386], [0.0930]
+  ),
+  caption : [Centroids coordinates for each group from the coupled database]
+)
