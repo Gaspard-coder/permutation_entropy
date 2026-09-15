@@ -474,7 +474,7 @@ We then computed the distance between each point of the CGMacros datasets and th
 #rslt[
   Using the first set of centroids, we can still classify the CGMacros dataset with quality metrics similar than running the Kmeans algorithm directly on the CGMacros dataset.
 ]
-
+#pagebreak()
 = Complementary approach: combining all the databases
 
 == First checks
@@ -519,8 +519,55 @@ We can also add the Fractal Dimension to see if we can improve any metrics:
 
 Matlab allows us to use different parameters to enhance the performance of the Kmeans algorithm :
 - Distance metric: `sqeuclidean, cityblock, cosine, correlation`
-- `MaxIter` : maximum number of iterations, here up to 3
+- `MaxIter` : maximum number of iterations, here 100, 1000 and 5000.
 - `Replicates` : number of times to repeat the clustering using new initial cluster centroid, here up to 5
 - Starting cluster centroid: `plus, cluster, sample`
 
 It leads to the test of 4*3*5*4 = 240 different combinations of parameters. We then computed the classification metrics for each combination and plotted the results:
+
+#figure(
+  table(
+    inset: 8pt,
+    columns: (1.4fr, 1fr, 0.8fr, 0.9fr, 0.9fr, 1.1fr, 1fr, 1fr, 1fr),
+    align: (col, row) => if col == 0 { left + horizon } else { center + horizon },
+    fill: (col, row) => if row == 0 { rgb("f1f5f9") },
+    stroke: (x, y) => if y == 0 { (bottom: 1.5pt + rgb("cbd5e1")) } else { 0.5pt + rgb("e2e8f0") },
+
+    table.header(
+      [*Metric*], [*Distance*], [*MaxIter*], [*Replicates*], [*Start*],
+      [*Balanced\ Accuracy*], [*F1-score*], [*Sensibility*], [*Specificity*]
+    ),
+
+    [Best\ Balanced Accuracy], [`cosine`], [100], [1], [`plus`],
+    table.cell(fill: rgb("fef08a"))[*0.92*], [0.92], [0.92], [0.93],
+
+    [Best\ F1-score], [`sqeuclidean`], [1000], [1], [`plus`],
+    [0.93], table.cell(fill: rgb("fef08a"))[*0.93*], [0.92], [0.94],
+
+    [Best\ Sensibility], [`cosine`], [5000], [1], [`plus`],
+    [0.93], [0.93], table.cell(fill: rgb("fef08a"))[*0.92*], [0.94],
+
+    [Best\ Specificity], [`correlation`], [100], [1], [`plus`],
+    [0.51], [0.04], [0.02], table.cell(fill: rgb("fef08a"))[*1*]
+  ),
+  caption: [Top configurations by metric]
+)
+More exactly, it appears that numerous configurations lead to the same best metrics, so we indicated in this table an example of best configuration for each metric trying also to optimize the others.
+We can also notice that by looking for the best F1-score, we reached one more time what seems to be the best performances taht we got before: 
+#align(center)[*Balanced Accuracy = 0.93, F1-score = 0.93, Sensibility = 0.92\ and Specificity = 0.94*]
+
+To ensure this result, we looked for for a configuration matchin all 4 best metrics. Unfortunately, this configuration does not exist, at least for the tested parameters. 
+
+We then selected the configuration that hit 3 out of 4 best metrics. This time, we found up to 102 configurations that are matching, all of them with the quality metrics mentionned just earlier! 
+
+We can then draw this first draft of parameters selection politic:
+- Distance metric: `cosine and sqeucliean` are the best candidates
+- Maximum of Iteration: we managed to reach the best metrics with 100, 1000 and 5000 iterations, so we can keep the default value of 100
+- Replicates: the occurances of 1,2,3,4 or 5 are almost the same, so we can keep the default value of 1 as well.
+- Starting cluster centroid: the four forms occur almost the same, so we can keep the default value of `plus` as well.
+
+#rslt[
+  This first optimization of the Kmeans algorithm shows that we can reach a good classification performance with a simple configuration, the parameter that seems to have the most impact is the distance metric, with `cosine` and `sqeuclidean` being the best candidates.
+
+  The complete table of best configurations can be generated using the `HxC_sweep_kmean.m` script.
+]
