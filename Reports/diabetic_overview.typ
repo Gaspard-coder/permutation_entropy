@@ -476,6 +476,8 @@ We then computed the distance between each point of the CGMacros datasets and th
 ]
 
 = Complementary approach: combining all the databases
+
+== First checks
 In order to have a more robust classification model, we combined all databases and see how good could we classified them:
 
 #figure(
@@ -483,7 +485,8 @@ In order to have a more robust classification model, we combined all databases a
   caption: [HxC feature plan of the centroids of the combined datasets]
 )
 
-Despite of the greater number of points, the variability within each class is still low enough to have a good separation between the two classes of patients. We can then try to classify:
+Despite of the greater number of points, the variability within each class is still low enough to have a good separation between the two classes of patients. We can then try to classify using the same basic Kmeans algorithm as before `kmeans(X,k,'Replicates',5);
+`:
 
 #figure(
   image("figures/HxC K-Means Classification all.png", width: 100%),
@@ -497,6 +500,27 @@ We can also add the Fractal Dimension to see if we can improve any metrics:
   caption: [Kmeans algorithm applied on the HxCxFD feature plane of the combined datasets]
 )
 
+#figure(
+  table(
+  columns: (1fr, 1fr, 1fr,1fr,1fr),
+  table.header([*Feature plan*],[*Balanced Accuracy*], [*F1-score*], [*Sensibility*], [*Specificity*]),
+  [*HxC*], [0.93],[0.93],[0.92],[0.94],
+  [*HxCxFD*], [0.82], [0.79], [0.86], [0.98],
+  ),
+  caption: [Classification performance of the Kmeans algorithm applied on the HxC and HxCxFD feature planes of the combined datasets]
+)
+
+
 #rslt[
   For over 90% for each metrics, the Kmeans algorithm on the HxC feature plane with (m=5, $tau$=2) seems to be a good candidate for a simple and robust classification model.
 ]
+
+== Optimizing the Kmeans algorithm
+
+Matlab allows us to use different parameters to enhance the performance of the Kmeans algorithm :
+- Distance metric: `sqeuclidean, cityblock, cosine, correlation`
+- `MaxIter` : maximum number of iterations, here up to 3
+- `Replicates` : number of times to repeat the clustering using new initial cluster centroid, here up to 5
+- Starting cluster centroid: `plus, cluster, sample`
+
+It leads to the test of 4*3*5*4 = 240 different combinations of parameters. We then computed the classification metrics for each combination and plotted the results:
