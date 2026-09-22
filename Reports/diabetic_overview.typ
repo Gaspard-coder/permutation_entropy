@@ -595,6 +595,154 @@ We obtain:
 
 == Madrid dataset
 We managed to obtain Madrid dataset with 208 patients, 17 of them being diabetic. That's the first potantial problem: an unbalanced dataset. Moreover, the measurements were taken every 5 minutes for 2 days, leading to only 250 points after downsampling.
-The two others datasets contains around 1000-2000 points per patients, so the $tau$ parameter might not be relevant anymore. Moreover, the assumption tha99t m! << N the sample size is not true anymore.
+The two others datasets contains around 1000-2000 points per patients, so the $tau$ parameter might not be relevant anymore. Moreover, the assumption that m! << N the sample size is not true anymore.
 
 == Hall dataset
+This dataset contains Continuous Glucose Monitoring (CGM) data from a study by Hall et al. (2018) analyzing glucose dysregulation patterns.
+
+Participants ($n=57$) aged 25–76 categorized based on ADA diagnostic criteria into three groups:
+- Type 2 Diabetic ($n=5$)
+- Prediabetic ($n=14$)
+- Normoglycemic ($n=38$)
+
+Originally recorded every 5 minutes, with resampled 15-minute versions (~700 data points per subject) provided for time-series analysis.
+
+We first compute the dataset in the HxC feature plane with still the (m=5, $tau$=2) parameters:
+
+#figure(
+  image("figures/Complexity-Entropy Plane: Comparison Hall.png", width: 120%),
+  caption: [HxC feature plan of the centroids of the Hall dataset]
+)
+
+Despite the unbalanced dataset, we can still see a good separation between the two classes of patients. We then applied the Kmeans algorithm with the parameters mentionned earlier (Distance metric: `cosine` ;Maximum of Iteration: 100; Replicates: 1; Starting cluster centroid: `plus`):
+
+#figure(
+  image("figures/HxC K-Means Classification - Hall.png", width: 120%),
+  caption: [Kmeans algorithm applied on the HxC feature plane of the Hall dataset (Accuracy = 84.7%, F1-score = 0.93, Sensibility = 0.89 and Specificity = 0.80)]
+)
+
+#figure(
+  table(
+    columns: (1fr, 1fr, 1fr),
+    table.header([*Group*],[*H*], [*C*]),
+    [*Diabetic Hall*], [0.8580],[0.1985],
+    [*Diabetic coupled*], [0.8171],[0.2201],
+    [*Non-Diabetic Hall*], [0.9363], [0.1071],
+    [*Non-Diabetic coupled*], [0.9386], [0.0930]
+  ),
+  caption : [Centroids coordinates for each group from the Hall dataset]
+)
+The values of the centroids are constistent with the ones found with the Kmeans algorithm on the combined datasets, which is a very good sign of robustness of our classification model!
+
+We can then usse the centroids found with the Kmeans algorithm on the combined datasets to classify the Hall dataset:
+
+#figure(
+  image("figures/Centroid Validation in HxC Plane - Hall dataset.png", width: 120%),
+  caption: [Kmeans algorithm applied on the HxC feature plane of the Hall dataset using the centroids found with the Kmeans algorithm on the combined datasets (Accuracy = 86.1%, F1-score = 0.95, Sensibility = 0.92 and Specificity = 0.80)]
+)
+
+The classification performance is even better than running the Kmeans algorithm directly on the Hall dataset. However, the unbalanced dataset might have an impact on the metrics, especially the specificity.
+#pagebreak()
+= Overall results
+We will now summarize the global characteristics of the different datasets and the classification performance of the Kmeans algorithm on each of them.
+
+== Datasets used
+- `DBT2/NDBT2 dataset` ($n=39$) with 19 DBT2 patients and 20 NDBT2 patients, average 1200 points per patient, 15-minute sampling frequency.
+- `CGMacros` ($n=29$) with 14 DBT2 patients and 15 NDBT2 patients, average 1000 points per patient, resampled to 15-minute sampling frequency. The measurements were taken with two different probes: dexcom and libre.
+- `Hall` ($n=43$) with 5 DBT2 patients and 38 NDBT2 patients, average 700 points per patient, resampled to 15-minute sampling frequency.
+
+== Permutation entropy and kmeans parameters
+Following our preliminary study, we computed the regular Shannon permutation entropy and MPR complexity with the parameters *(m=5, $tau$=2)* for all datasets. 
+
+To classified the patients, we showed that applying the Kmeans algorithm on the HxC feature plane with the following parameters was able to achieve good classification performance:
+- Distance metric: `cosine`
+- Maximum of Iteration: 100
+- Replicates: 1
+- Starting cluster centroid: `plus`
+
+== Classification results
+
+#let bg-dbt2 = rgb("e6f0fa")
+#let bg-ndbt2 = rgb("e6f5ea")
+
+#figure(
+  table(
+    columns: (1.2fr, 1fr, 1fr),
+    align: (left + horizon, center + horizon, center + horizon),
+    stroke: (x, y) => if y == 0 { none } else { 0.5pt + rgb("#e2e8f0") }, // Bordures fines
+    table.header([*Dataset*], [*Normalized permutation entropy (H)*], [*MPR complexity (C)*]),
+    
+    // Groupe DBT2
+    table.cell(fill: bg-dbt2)[*DBT2*], table.cell(fill: rgb("#6bb5ff"))[0.9518], table.cell(fill: rgb("#6bb5ff"))[0.0791],
+    table.cell(fill: bg-dbt2)[*CGMacros + Libre DBT2*], table.cell(fill: rgb("#ffb639"))[0.9155], table.cell(fill: rgb("#ffb639"))[0.1147],
+    table.cell(fill: bg-dbt2)[*CGMacros + Dexcom DBT2*], table.cell(fill: rgb("#ff7b39"))[0.9155], table.cell(fill: rgb("#ff7b39"))[0.1147],
+    table.cell(fill: bg-dbt2)[*Hall DBT2*], table.cell(fill: rgb("#95ff39"))[0.9363], table.cell(fill: rgb("#95ff39"))[0.1071],
+    table.hline(stroke: 2pt + rgb("#020202")),
+    
+    // Groupe NDBT2
+    table.cell(fill: bg-ndbt2)[*NDBT2*], table.cell(fill: rgb("#6bb5ff"))[0.8303], table.cell(fill: rgb("#6bb5ff"))[0.2189],
+    table.cell(fill: bg-ndbt2)[*CGMacros + Libre NDBT2*], table.cell(fill: rgb("#ffb639"))[0.8171], table.cell(fill: rgb("#ffb639"))[0.2201],
+    table.cell(fill: bg-ndbt2)[*CGMacros + Dexcom NDBT2*], table.cell(fill: rgb("#ff7b39"))[0.8171], table.cell(fill: rgb("#ff7b39"))[0.2201],
+    table.cell(fill: bg-ndbt2)[*Hall NDBT2*], table.cell(fill: rgb("#95ff39"))[0.8580], table.cell(fill: rgb("#95ff39"))[0.1985]
+  ),
+  caption: [Normalized permutation entropy and MPR complexity for the centroids of each group of patients in the different datasets]
+)
+
+== Classification performance
+With optimized permutation entropy and kmeans algortihm parameters, we obtained the following classification performance inside each dataset:
+
+// Définition des couleurs
+#let bg-header = rgb("#f1f5f9") // Ardoise clair pour l'en-tête
+#let bg-zebra = rgb("#f8fafc")  // Gris très doux pour l'alternance
+#let border-color = rgb("#cbd5e1")
+
+// --- Premier Tableau ---
+#figure(
+  table(
+    columns: (1.5fr, 1fr, 1fr, 1fr, 1fr),
+    align: (left + horizon, center + horizon, center + horizon, center + horizon, center + horizon),
+    stroke: (x, y) => if y == 0 { none } else { 0.5pt + border-color },
+    fill: (x, y) => {
+      if y == 0 { bg-header }
+      else if calc.even(y) { bg-zebra }
+      else { none }
+    },
+    
+    table.header(
+      [*Group*], [*Balanced Accuracy*], [*F1-score*], [*Sensibility*], [*Specificity*]
+    ),
+
+    [*DBT2/NDBT2*], [0.98], [0.98], [0.95], [0.91],
+    [*CGMacros + Dexcom*], [0.79], [0.81], [0.87], [0.71],
+    [*CGMacros + Libre*], [0.90], [0.90], [0.87], [0.93],
+    [*Average CGMacros*], [0.845], [0.855], [0.87], [0.82],
+    [*DBT2/NDBT2 + CGMacros*], [0.93], [0.93], [0.92], [0.94],
+    [*Hall*], [0.85], [0.93], [0.89], [0.80]
+  ),
+  caption: [Classification performance of the Kmeans algorithm applied on the HxC feature plane of the different datasets]
+)
+
+Then, we tested the centroids of given datasets to classify the other datasets:
+
+// --- Second Tableau ---
+#figure(
+  table(
+    columns: (1.3fr, 1.3fr, 1fr, 1fr, 1fr, 1fr),
+    align: (left + horizon, left + horizon, center + horizon, center + horizon, center + horizon, center + horizon),
+    stroke: (x, y) => if y == 0 { none } else { 0.5pt + border-color },
+    fill: (x, y) => {
+      if y == 0 { bg-header }
+      else if calc.even(y) { bg-zebra }
+      else { none }
+    },
+
+    table.header(
+      [*Group*], [*Centroids source*], [*Balanced Accuracy*], [*F1-score*], [*Sensibility*], [*Specificity*]
+    ),
+
+    [*CGMacros + Dexcom*], [DBT2/NDBT2], [0.83], [0.81], [0.73], [0.93],
+    [*CGMacros + Libre*], [DBT2/NDBT2], [0.93], [0.93], [0.87], [1.00],
+    [*Hall*], [DBT2/NDBT2 + CGMacros], [0.86], [0.95], [0.92], [0.80]
+  ),
+  caption: [Classification performance of the Kmeans algorithm applied on the HxC feature plane of the different datasets using the centroids found with the Kmeans algorithm on other datasets]
+)
