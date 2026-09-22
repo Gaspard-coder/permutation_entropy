@@ -592,3 +592,9 @@ We obtain:
   ),
   caption : [Centroids coordinates for each group from the coupled database]
 )
+
+== Madrid dataset
+We managed to obtain Madrid dataset with 208 patients, 17 of them being diabetic. That's the first potantial problem: an unbalanced dataset. Moreover, the measurements were taken every 5 minutes for 2 days, leading to only 250 points after downsampling.
+The two others datasets contains around 1000-2000 points per patients, so the $tau$ parameter might not be relevant anymore. Moreover, the assumption tha99t m! << N the sample size is not true anymore.
+
+== Hall dataset
