@@ -742,11 +742,11 @@ Then, we tested the centroids of given datasets to classify the other datasets:
   caption: [Classification performance of the Kmeans algorithm applied on the HxC feature plane of the different datasets using the centroids found with the Kmeans algorithm on other datasets]
 )
 #pagebreak()
-= Going back to the weighted permutation entropy (WPE)
+= Going back to the weighted permutation entropy (WPE) 
 In order to improve our study, we tried to do the same analysis using this time the weighted permutation entropy. 
 We already saw that the best set of parameters to compute the WPE was (m=4, $tau$=2). We then computed the HxC feature plane with these parameters on the different datasets:
 
-== Weigthed permutation entropy and complexity feature plane
+== Weigthed permutation entropy and complexity feature plane <WHXC>
 
 *Argentinian DBT2/NDBT2 dataset:*
 #figure(
@@ -1111,6 +1111,16 @@ caption: [Specificity (True Negative Rate) comparison between PE and WPE.]
 - *Sensitivity*: Standard PE maintains a generally higher sensitivity across most groups, whereas WPE trades some sensitivity for lower false-alarm rates.
 - *Specificity*: WPE's primary advantage is in specificity on noisy devices, showing an outstanding $+0.22$ gain on Dexcom in self-clustering and maintaining $1.00$ on Libre centroid transfer.
 ]
+
+#pagebreak()
+= Currating the datasets
+As we saw in @WHXC, the weighted permutation entropy makes appear more outliers in the datasets then the regular PE. We now tried to curate datasets in order to better compare PE and WPE performances.
+
+== Spotting the outliers
+
+=== DBT2/NDBT2 dataset
+
+
 
 #pagebreak()
 = To try next
