@@ -668,20 +668,22 @@ To classified the patients, we showed that applying the Kmeans algorithm on the 
     // Groupe NDBT2
     table.cell(fill: bg-dbt2)[*NDBT2*], table.cell(fill: rgb("#6bb5ff"))[0.9518], table.cell(fill: rgb("#6bb5ff"))[0.0791],
     table.cell(fill: bg-dbt2)[*CGMacros + Libre NDBT2*], table.cell(fill: rgb("#ffb639"))[0.9155], table.cell(fill: rgb("#ffb639"))[0.1147],
-    table.cell(fill: bg-dbt2)[*CGMacros + Dexcom NDBT2*], table.cell(fill: rgb("#ff7b39"))[0.9155], table.cell(fill: rgb("#ff7b39"))[0.1147],
+    table.cell(fill: bg-dbt2)[*CGMacros + Dexcom NDBT2*], table.cell(fill: rgb("#ff7b39"))[0.9129], table.cell(fill: rgb("#ff7b39"))[0.1144],
+    table.cell(fill: bg-dbt2)[*NDBT2 + CGMacros*], table.cell(fill: rgb("#ff72c7"))[0.9386], table.cell(fill: rgb("#ff72c7"))[0.0930],
     table.cell(fill: bg-dbt2)[*Hall NDBT2*], table.cell(fill: rgb("#95ff39"))[0.9363], table.cell(fill: rgb("#95ff39"))[0.1071],
     table.hline(stroke: 2pt + rgb("#020202")),
     
     // Groupe DBT2
     table.cell(fill: bg-ndbt2)[*DBT2*], table.cell(fill: rgb("#6bb5ff"))[0.8303], table.cell(fill: rgb("#6bb5ff"))[0.2189],
-    table.cell(fill: bg-ndbt2)[*CGMacros + Libre DBT2*], table.cell(fill: rgb("#ffb639"))[0.8171], table.cell(fill: rgb("#ffb639"))[0.2201],
-    table.cell(fill: bg-ndbt2)[*CGMacros + Dexcom DBT2*], table.cell(fill: rgb("#ff7b39"))[0.8171], table.cell(fill: rgb("#ff7b39"))[0.2201],
+    table.cell(fill: bg-ndbt2)[*CGMacros + Libre DBT2*], table.cell(fill: rgb("#ffb639"))[0.8164], table.cell(fill: rgb("#ffb639"))[0.2244],
+    table.cell(fill: bg-ndbt2)[*CGMacros + Dexcom DBT2*], table.cell(fill: rgb("#ff7b39"))[0.8161], table.cell(fill: rgb("#ff7b39"))[0.2103],
+    table.cell(fill: bg-dbt2)[*DBT2 + CGMacros*], table.cell(fill: rgb("#ff72c7"))[0.8171], table.cell(fill: rgb("#ff72c7"))[0.2201],
     table.cell(fill: bg-ndbt2)[*Hall DBT2*], table.cell(fill: rgb("#95ff39"))[0.8580], table.cell(fill: rgb("#95ff39"))[0.1985]
   ),
   caption: [Normalized permutation entropy and MPR complexity for the centroids of each group of patients in the different datasets]
 )
 
-== Classification performance
+== Classification performance of regular PE
 With optimized permutation entropy and kmeans algortihm parameters, we obtained the following classification performance inside each dataset:
 
 // Définition des couleurs
@@ -859,6 +861,7 @@ We applied the optimized WPE Kmeans algorithm to the others datasets:
     table.cell(fill: bg-dbt2)[*NDBT2*], table.cell(fill: rgb("#6bb5ff"))[0.9264], table.cell(fill: rgb("#6bb5ff"))[0.0852],
     table.cell(fill: bg-dbt2)[*CGMacros + Libre NDBT2*], table.cell(fill: rgb("#ffb639"))[0.8857], table.cell(fill: rgb("#ffb639"))[0.1214],
     table.cell(fill: bg-dbt2)[*CGMacros + Dexcom NDBT2*], table.cell(fill: rgb("#ff7b39"))[0.9172], table.cell(fill: rgb("#ff7b39"))[0.0903],
+    table.cell(fill: bg-dbt2)[*NDBT2 + CGMacros*], table.cell(fill: rgb("#ff72c7"))[0.9133], table.cell(fill: rgb("#ff72c7"))[0.0962],
     table.cell(fill: bg-dbt2)[*Hall NDBT2*], table.cell(fill: rgb("#95ff39"))[0.9203], table.cell(fill: rgb("#95ff39"))[0.0928],
     table.hline(stroke: 2pt + rgb("#020202")),
     
@@ -866,6 +869,7 @@ We applied the optimized WPE Kmeans algorithm to the others datasets:
     table.cell(fill: bg-ndbt2)[*DBT2*], table.cell(fill: rgb("#6bb5ff"))[0.7054], table.cell(fill: rgb("#6bb5ff"))[0.2476],
     table.cell(fill: bg-ndbt2)[*CGMacros + Libre DBT2*], table.cell(fill: rgb("#ffb639"))[0.6513], table.cell(fill: rgb("#ffb639"))[0.2659],
     table.cell(fill: bg-ndbt2)[*CGMacros + Dexcom DBT2*], table.cell(fill: rgb("#ff7b39"))[0.7167], table.cell(fill: rgb("#ff7b39"))[0.2396],
+    table.cell(fill: bg-dbt2)[*DBT2 + CGMacros*], table.cell(fill: rgb("#ff72c7"))[0.6910], table.cell(fill: rgb("#ff72c7"))[0.2513],
     table.cell(fill: bg-ndbt2)[*Hall DBT2*], table.cell(fill: rgb("#95ff39"))[0.7751], table.cell(fill: rgb("#95ff39"))[0.2100]
   ),
   caption: [Normalized weighted permutation entropy and MPR complexity for the centroids of each group of patients in the different datasets]
@@ -923,13 +927,192 @@ Then, we tested the centroids of given datasets to classify the other datasets:
       [*Group*], [*Centroids source*], [*Balanced Accuracy*], [*F1-score*], [*Sensibility*], [*Specificity*]
     ),
 
-    [*CGMacros + Dexcom*], [DBT2/NDBT2], [0.83], [0.81], [0.73], [0.93],
-    [*CGMacros + Libre*], [DBT2/NDBT2], [0.93], [0.93], [0.87], [1.00],
-    [*Hall*], [DBT2/NDBT2 + CGMacros], [0.86], [0.95], [0.92], [0.80]
+    [*CGMacros + Dexcom*], [DBT2/NDBT2], [0.86], [0.86], [0.80], [0.93],
+    [*CGMacros + Libre*], [DBT2/NDBT2], [0.90], [0.89], [0.80], [1.00],
+    [*Hall*], [DBT2/NDBT2 + CGMacros], [0.75], [0.92], [0.89], [0.60]
   ),
   caption: [Classification performance of the Kmeans algorithm applied on the WHxC feature plane of the different datasets using the centroids found with the Kmeans algorithm on other datasets]
 )
+#pagebreak()
+= Comparing PE and WPE classification performance on raw datasets
 
+// Color definitions
+#let bg-header = rgb("#f1f5f9")
+#let bg-zebra = rgb("#f8fafc")
+#let bg-section = rgb("#e2e8f0")
+#let border-color = rgb("#cbd5e1")
+#let pos-green = rgb("#16a34a")
+#let neg-red = rgb("#dc2626")
+#let neutral-slate = rgb("#64748b")
+#let callout-bg = rgb("#f0f9ff")
+#let callout-border = rgb("#0284c7")
+Below is a direct comparison between standard Shannon Permutation Entropy (PE) and Weighted Permutation Entropy (WPE) across all datasets for both within-dataset kmeans clustering and cross-dataset centroid evaluation.
+
+== Metric-by-Metric Performance Comparison: PE vs. WPE
+
+The following tables present a detailed, metric-by-metric comparison between standard Shannon Permutation Entropy (PE) and Weighted Permutation Entropy (WPE), covering both within-dataset $k$-means clustering and cross-dataset centroid transfer evaluations.
+
+=== Balanced Accuracy Comparison
+
+#figure(
+table(
+columns: (1.8fr, 1.6fr, 1fr, 1fr, 1.1fr),
+align: (left + horizon, left + horizon, center + horizon, center + horizon, center + horizon),
+stroke: (x, y) => if y == 0 { none } else { 0.5pt + border-color },
+fill: (x, y) => {
+if y == 0 { bg-header }
+else if y == 1 or y == 8 { bg-section }
+else if calc.even(y) { bg-zebra }
+else { none }
+},
+
+table.header(
+  [*Target Group*], [*Evaluation Context / Centroids*], [*PE Acc.*], [*WPE Acc.*], [*Acc. $Delta$*]
+),
+
+// Within-dataset
+table.cell(colspan: 5)[*Within-Dataset Clustering (Self-Trained Centroids)*],
+[*DBT2/NDBT2*], [K-Means (Self)], [0.98], [0.97], text(fill: neg-red)[-0.01],
+[*CGMacros + Dexcom*], [K-Means (Self)], [0.79], [0.86], text(fill: pos-green, weight: "bold")[+0.07],
+[*CGMacros + Libre*], [K-Means (Self)], [0.90], [0.86], text(fill: neg-red)[-0.04],
+[*Average CGMacros*], [K-Means (Self)], [0.845], [0.86], text(fill: pos-green)[+0.015],
+[*DBT2/NDBT2 + CGMacros*], [K-Means (Self)], [0.93], [0.91], text(fill: neg-red)[-0.02],
+[*Hall*], [K-Means (Self)], [0.85], [0.79], text(fill: neg-red)[-0.06],
+
+// Cross-dataset
+table.cell(colspan: 5)[*Cross-Dataset Centroid Validation Transfer*],
+[*CGMacros + Dexcom*], [DBT2/NDBT2], [0.83], [0.86], text(fill: pos-green)[+0.03],
+[*CGMacros + Libre*], [DBT2/NDBT2], [0.93], [0.90], text(fill: neg-red)[-0.03],
+[*Hall*], [DBT2/NDBT2 + CGMacros], [0.86], [0.75], text(fill: neg-red, weight: "bold")[-0.11]
+
+
+),
+caption: [Balanced Accuracy comparison between PE (HxC) and WPE (WHxC) feature spaces.]
+)
+
+=== F1-Score Comparison
+
+#figure(
+table(
+columns: (1.8fr, 1.6fr, 1fr, 1fr, 1.1fr),
+align: (left + horizon, left + horizon, center + horizon, center + horizon, center + horizon),
+stroke: (x, y) => if y == 0 { none } else { 0.5pt + border-color },
+fill: (x, y) => {
+if y == 0 { bg-header }
+else if y == 1 or y == 8 { bg-section }
+else if calc.even(y) { bg-zebra }
+else { none }
+},
+
+table.header(
+  [*Target Group*], [*Evaluation Context / Centroids*], [*PE F1*], [*WPE F1*], [*F1 $Delta$*]
+),
+
+// Within-dataset
+table.cell(colspan: 5)[*Within-Dataset Clustering (Self-Trained Centroids)*],
+[*DBT2/NDBT2*], [K-Means (Self)], [0.98], [0.98], text(fill: neutral-slate)[0.00],
+[*CGMacros + Dexcom*], [K-Means (Self)], [0.81], [0.86], text(fill: pos-green, weight: "bold")[+0.05],
+[*CGMacros + Libre*], [K-Means (Self)], [0.90], [0.86], text(fill: neg-red)[-0.04],
+[*Average CGMacros*], [K-Means (Self)], [0.855], [0.86], text(fill: pos-green)[+0.005],
+[*DBT2/NDBT2 + CGMacros*], [K-Means (Self)], [0.93], [0.91], text(fill: neg-red)[-0.02],
+[*Hall*], [K-Means (Self)], [0.93], [0.87], text(fill: neg-red)[-0.06],
+
+// Cross-dataset
+table.cell(colspan: 5)[*Cross-Dataset Centroid Validation Transfer*],
+[*CGMacros + Dexcom*], [DBT2/NDBT2], [0.81], [0.86], text(fill: pos-green)[+0.05],
+[*CGMacros + Libre*], [DBT2/NDBT2], [0.93], [0.89], text(fill: neg-red)[-0.04],
+[*Hall*], [DBT2/NDBT2 + CGMacros], [0.95], [0.92], text(fill: neg-red)[-0.03]
+
+
+),
+caption: [F1-Score performance comparison between PE and WPE.]
+)
+
+== Sensitivity Comparison
+
+#figure(
+table(
+columns: (1.8fr, 1.6fr, 1fr, 1fr, 1.1fr),
+align: (left + horizon, left + horizon, center + horizon, center + horizon, center + horizon),
+stroke: (x, y) => if y == 0 { none } else { 0.5pt + border-color },
+fill: (x, y) => {
+if y == 0 { bg-header }
+else if y == 1 or y == 8 { bg-section }
+else if calc.even(y) { bg-zebra }
+else { none }
+},
+
+table.header(
+  [*Target Group*], [*Evaluation Context / Centroids*], [*PE Sens.*], [*WPE Sens.*], [*Sens. $Delta$*]
+),
+
+// Within-dataset
+table.cell(colspan: 5)[*Within-Dataset Clustering (Self-Trained Centroids)*],
+[*DBT2/NDBT2*], [K-Means (Self)], [0.95], [1.00], text(fill: pos-green)[+0.05],
+[*CGMacros + Dexcom*], [K-Means (Self)], [0.87], [0.80], text(fill: neg-red)[-0.07],
+[*CGMacros + Libre*], [K-Means (Self)], [0.87], [0.80], text(fill: neg-red)[-0.07],
+[*Average CGMacros*], [K-Means (Self)], [0.87], [0.80], text(fill: neg-red)[-0.07],
+[*DBT2/NDBT2 + CGMacros*], [K-Means (Self)], [0.92], [0.88], text(fill: neg-red)[-0.04],
+[*Hall*], [K-Means (Self)], [0.89], [0.79], text(fill: neg-red, weight: "bold")[-0.10],
+
+// Cross-dataset
+table.cell(colspan: 5)[*Cross-Dataset Centroid Validation Transfer*],
+[*CGMacros + Dexcom*], [DBT2/NDBT2], [0.73], [0.80], text(fill: pos-green)[+0.07],
+[*CGMacros + Libre*], [DBT2/NDBT2], [0.87], [0.80], text(fill: neg-red)[-0.07],
+[*Hall*], [DBT2/NDBT2 + CGMacros], [0.92], [0.89], text(fill: neg-red)[-0.03]
+
+
+),
+caption: [Sensitivity (True Positive Rate) comparison between PE and WPE.]
+)
+
+== Specificity Comparison
+
+#figure(
+table(
+columns: (1.8fr, 1.6fr, 1fr, 1fr, 1.1fr),
+align: (left + horizon, left + horizon, center + horizon, center + horizon, center + horizon),
+stroke: (x, y) => if y == 0 { none } else { 0.5pt + border-color },
+fill: (x, y) => {
+if y == 0 { bg-header }
+else if y == 1 or y == 8 { bg-section }
+else if calc.even(y) { bg-zebra }
+else { none }
+},
+
+table.header(
+  [*Target Group*], [*Evaluation Context / Centroids*], [*PE Spec.*], [*WPE Spec.*], [*Spec. $Delta$*]
+),
+
+// Within-dataset
+table.cell(colspan: 5)[*Within-Dataset Clustering (Self-Trained Centroids)*],
+[*DBT2/NDBT2*], [K-Means (Self)], [0.91], [0.95], text(fill: pos-green)[+0.04],
+[*CGMacros + Dexcom*], [K-Means (Self)], [0.71], [0.93], text(fill: pos-green, weight: "bold")[+0.22],
+[*CGMacros + Libre*], [K-Means (Self)], [0.93], [0.93], text(fill: neutral-slate)[0.00],
+[*Average CGMacros*], [K-Means (Self)], [0.82], [0.93], text(fill: pos-green, weight: "bold")[+0.11],
+[*DBT2/NDBT2 + CGMacros*], [K-Means (Self)], [0.94], [0.94], text(fill: neutral-slate)[0.00],
+[*Hall*], [K-Means (Self)], [0.80], [0.80], text(fill: neutral-slate)[0.00],
+
+// Cross-dataset
+table.cell(colspan: 5)[*Cross-Dataset Centroid Validation Transfer*],
+[*CGMacros + Dexcom*], [DBT2/NDBT2], [0.93], [0.93], text(fill: neutral-slate)[0.00],
+[*CGMacros + Libre*], [DBT2/NDBT2], [1.00], [1.00], text(fill: neutral-slate)[0.00],
+[*Hall*], [DBT2/NDBT2 + CGMacros], [0.80], [0.60], text(fill: neg-red, weight: "bold")[-0.20]
+
+
+),
+caption: [Specificity (True Negative Rate) comparison between PE and WPE.]
+)
+
+#rslt[
+#text(weight: "bold", size: 11pt)[Key Analytical Insights per Metric:]
+- *Balanced Accuracy*: WPE shows significant improvements on high-variance CGM signals (Dexcom: $+0.07$ self, $+0.03$ transfer), while regular PE performs better on smoother datasets (Hall: $-0.06$ self, $-0.11$ transfer).
+- *F1-Score*: WPE matches or exceeds PE on Dexcom ($+0.05$), maintaining overall competitive F1-scores across diabetic populations.
+- *Sensitivity*: Standard PE maintains a generally higher sensitivity across most groups, whereas WPE trades some sensitivity for lower false-alarm rates.
+- *Specificity*: WPE's primary advantage is in specificity on noisy devices, showing an outstanding $+0.22$ gain on Dexcom in self-clustering and maintaining $1.00$ on Libre centroid transfer.
+]
+
+#pagebreak()
 = To try next
 == Multi-dimensional
 - 2-D Permutation Entropy (see EntropyHUB) //see in the documentation how it's defined
