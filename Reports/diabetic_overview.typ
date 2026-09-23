@@ -508,7 +508,7 @@ We can also add the Fractal Dimension to see if we can improve any metrics:
   For over 90% for each metrics, the Kmeans algorithm on the HxC feature plane with (m=5, $tau$=2) seems to be a good candidate for a simple and robust classification model.
 ]
 
-== Optimizing the Kmeans algorithm
+== Optimizing the Kmeans algorithm <kmeans_param>
 
 Matlab allows us to use different parameters to enhance the performance of the Kmeans algorithm :
 - Distance metric: `sqeuclidean, cityblock, cosine, correlation`
@@ -636,7 +636,7 @@ We can then usse the centroids found with the Kmeans algorithm on the combined d
 
 The classification performance is even better than running the Kmeans algorithm directly on the Hall dataset. However, the unbalanced dataset might have an impact on the metrics, especially the specificity.
 #pagebreak()
-= Overall results
+= Overall results for the regulare shannon permutation entropy
 We will now summarize the global characteristics of the different datasets and the classification performance of the Kmeans algorithm on each of them.
 
 == Datasets used
@@ -665,18 +665,18 @@ To classified the patients, we showed that applying the Kmeans algorithm on the 
     stroke: (x, y) => if y == 0 { none } else { 0.5pt + rgb("#e2e8f0") }, // Bordures fines
     table.header([*Dataset*], [*Normalized permutation entropy (H)*], [*MPR complexity (C)*]),
     
-    // Groupe DBT2
-    table.cell(fill: bg-dbt2)[*DBT2*], table.cell(fill: rgb("#6bb5ff"))[0.9518], table.cell(fill: rgb("#6bb5ff"))[0.0791],
-    table.cell(fill: bg-dbt2)[*CGMacros + Libre DBT2*], table.cell(fill: rgb("#ffb639"))[0.9155], table.cell(fill: rgb("#ffb639"))[0.1147],
-    table.cell(fill: bg-dbt2)[*CGMacros + Dexcom DBT2*], table.cell(fill: rgb("#ff7b39"))[0.9155], table.cell(fill: rgb("#ff7b39"))[0.1147],
-    table.cell(fill: bg-dbt2)[*Hall DBT2*], table.cell(fill: rgb("#95ff39"))[0.9363], table.cell(fill: rgb("#95ff39"))[0.1071],
+    // Groupe NDBT2
+    table.cell(fill: bg-dbt2)[*NDBT2*], table.cell(fill: rgb("#6bb5ff"))[0.9518], table.cell(fill: rgb("#6bb5ff"))[0.0791],
+    table.cell(fill: bg-dbt2)[*CGMacros + Libre NDBT2*], table.cell(fill: rgb("#ffb639"))[0.9155], table.cell(fill: rgb("#ffb639"))[0.1147],
+    table.cell(fill: bg-dbt2)[*CGMacros + Dexcom NDBT2*], table.cell(fill: rgb("#ff7b39"))[0.9155], table.cell(fill: rgb("#ff7b39"))[0.1147],
+    table.cell(fill: bg-dbt2)[*Hall NDBT2*], table.cell(fill: rgb("#95ff39"))[0.9363], table.cell(fill: rgb("#95ff39"))[0.1071],
     table.hline(stroke: 2pt + rgb("#020202")),
     
-    // Groupe NDBT2
-    table.cell(fill: bg-ndbt2)[*NDBT2*], table.cell(fill: rgb("#6bb5ff"))[0.8303], table.cell(fill: rgb("#6bb5ff"))[0.2189],
-    table.cell(fill: bg-ndbt2)[*CGMacros + Libre NDBT2*], table.cell(fill: rgb("#ffb639"))[0.8171], table.cell(fill: rgb("#ffb639"))[0.2201],
-    table.cell(fill: bg-ndbt2)[*CGMacros + Dexcom NDBT2*], table.cell(fill: rgb("#ff7b39"))[0.8171], table.cell(fill: rgb("#ff7b39"))[0.2201],
-    table.cell(fill: bg-ndbt2)[*Hall NDBT2*], table.cell(fill: rgb("#95ff39"))[0.8580], table.cell(fill: rgb("#95ff39"))[0.1985]
+    // Groupe DBT2
+    table.cell(fill: bg-ndbt2)[*DBT2*], table.cell(fill: rgb("#6bb5ff"))[0.8303], table.cell(fill: rgb("#6bb5ff"))[0.2189],
+    table.cell(fill: bg-ndbt2)[*CGMacros + Libre DBT2*], table.cell(fill: rgb("#ffb639"))[0.8171], table.cell(fill: rgb("#ffb639"))[0.2201],
+    table.cell(fill: bg-ndbt2)[*CGMacros + Dexcom DBT2*], table.cell(fill: rgb("#ff7b39"))[0.8171], table.cell(fill: rgb("#ff7b39"))[0.2201],
+    table.cell(fill: bg-ndbt2)[*Hall DBT2*], table.cell(fill: rgb("#95ff39"))[0.8580], table.cell(fill: rgb("#95ff39"))[0.1985]
   ),
   caption: [Normalized permutation entropy and MPR complexity for the centroids of each group of patients in the different datasets]
 )
@@ -744,8 +744,191 @@ Then, we tested the centroids of given datasets to classify the other datasets:
 In order to improve our study, we tried to do the same analysis using this time the weighted permutation entropy. 
 We already saw that the best set of parameters to compute the WPE was (m=4, $tau$=2). We then computed the HxC feature plane with these parameters on the different datasets:
 
+== Weigthed permutation entropy and complexity feature plane
 
+*Argentinian DBT2/NDBT2 dataset:*
+#figure(
+  image("figures/Complexity-Weigthed Entropy Plane: Comparison 4-2.png", width: 120%),
+  caption: [Comparison of the weighted permutation entropy for DBT2/NDBT2 dataset]
+)
 
+#pagebreak()
+*CGMacros dataset (dexcom and libre probes):*
+#figure(
+  image("figures/Complexity-Weigthed Entropy Plane: Comparison dexcom 4-2.png", width: 120%),
+  caption: [Comparison of the weighted permutation entropy for CGMacros dataset using dexcom probe]
+)
+
+#figure(
+  image("figures/Complexity-Weigthed Entropy Plane: Comparison libre 4-2.png", width: 120%),
+  caption: [Comparison of the weighted permutation entropy for CGMacros dataset using libre probe]
+)
+
+*Combined DBT2/NDBT2 and CGMacros datasets:*
+#figure(
+  image("figures/Complexity-Weigthed Entropy Plane: Comparison all 4-2.png", width: 120%),
+  caption: [Comparison of the weighted permutation entropy for mixed NDBT2/DBT2 and CGMacros datasets]
+)
+
+*Hall dataset:*
+#figure(
+  image("figures/Complexity-Weigthed Entropy Plane: Comparison Hall 4-2.png", width: 120%),
+  caption: [Comparison of the weighted permutation entropy for Hall dataset]
+)
+
+We already can make several observations:
+- As the (m=4, $tau$=2) selected parameters provide well-splitted centroids, we also observe really large standard deviations for WPE and Complexity and this for each group of patient.
+
+- Some points seems also to be outliers, we might need to manually curated the datasets.
+
+Let's first try to apply the Kmeans algorithm on raw datas, at least as a future point of comparison with eventually curated datasets.
+
+== Kmeans algorithm parameters selection with WPE
+We applied the same parameters sweep as in @kmeans_param to the best working dataset i.e. DBT2/NDBT2 this time with (m=4, $tau$=2) parameters.
+
+This time, we achieved to find configurations that hit all 4 best metrics. More precisely, we got 180 "perfect" configurations out of 240 tested.
+
+One more time, we then keep the more simple parameters:
+- Distance metric: `sqeuclidean`
+- Maximum of Iteration: 100
+- Replicates: 1
+- Starting cluster centroid: `plus`
+
+#figure(
+  image("figures/WHxC K-Means Classification DBT2 4-2.png", width: 120%),
+  caption: [Kmeans algorithm applied on the WHxC feature plane of the DBT2/NDBT2 dataset with (m=4, $tau$=2) parameters ]
+)
+
+#figure(
+  image("figures/Distance to Cluster Centroids WHxC DBT2 4-2.png", width: 120%),
+  caption: [Distance to cluster centroids of the Kmeans algorithm applied on the WHxC feature plane of the DBT2/NDBT2 dataset with (m=4, $tau$=2) parameters ]
+)
+
+With this and all the "perfect" configurations, we managed to reach the following metrics:
+#align(center)[*Balanced Accuracy = 0.97, F1-score = 0.98, Sensibility = 1\ and Specificity = 0.95*]
+
+#nb[
+  On the same dataset with the regular permutation entropy, we reached: #align(center)[*Balanced Accuracy = 0.93, F1-score = 0.93, Sensibility = 0.92\ and Specificity = 0.94*]
+
+]
+
+#rslt[
+  As it focused more on the variations of the signal, the WPE seems to be a better tools to compute diabetic CGM.
+]
+
+== Testing WPE Kmeans robustness on others dataset
+We applied the optimized WPE Kmeans algorithm to the others datasets:
+#pagebreak()
+*CGMacros dataset (dexcom and libre probes)*
+#figure(
+  image("figures/WHxC K-Means Classification dexcom 4-2.png", width: 120%),
+  caption: [Kmeans algorithm applied on the WHxC feature plane of the CGMacros dataset with dexcom probe and (m=4, $tau$=2) parameters ]
+)
+
+#figure(
+  image("figures/WHxC K-Means Classification libre.png", width: 120%),
+  caption: [Kmeans algorithm applied on the WHxC feature plane of the CGMacros dataset with libre probe and (m=4, $tau$=2) parameters ]
+) 
+#pagebreak()
+*Combined dataset DBT2/NDBT2 and CGMacros*
+#figure(
+  image("figures/WHxC K-Means Classification all .png", width: 120%),
+  caption: [Kmeans algorithm applied on the WHxC feature plane of the combined datasets with (m=4, $tau$=2) parameters ]
+)
+
+*Hall dataset*
+
+#figure(
+  image("figures/WHxC K-Means Classification Hall.png", width: 120%),
+  caption: [Kmeans algorithm applied on the WHxC feature plane of the Hall dataset with (m=4, $tau$=2) parameters ]
+)
+
+== Classification results with WPE
+
+#let bg-dbt2 = rgb("e6f0fa")
+#let bg-ndbt2 = rgb("e6f5ea")
+
+#figure(
+  table(
+    columns: (1.2fr, 1fr, 1fr),
+    align: (left + horizon, center + horizon, center + horizon),
+    stroke: (x, y) => if y == 0 { none } else { 0.5pt + rgb("#e2e8f0") }, // Bordures fines
+    table.header([*Dataset*], [*Normalized weighted permutation entropy (H)*], [*MPR complexity (C)*]),
+    
+    // Groupe NDBT2
+    table.cell(fill: bg-dbt2)[*NDBT2*], table.cell(fill: rgb("#6bb5ff"))[0.9264], table.cell(fill: rgb("#6bb5ff"))[0.0852],
+    table.cell(fill: bg-dbt2)[*CGMacros + Libre NDBT2*], table.cell(fill: rgb("#ffb639"))[0.8857], table.cell(fill: rgb("#ffb639"))[0.1214],
+    table.cell(fill: bg-dbt2)[*CGMacros + Dexcom NDBT2*], table.cell(fill: rgb("#ff7b39"))[0.9172], table.cell(fill: rgb("#ff7b39"))[0.0903],
+    table.cell(fill: bg-dbt2)[*Hall NDBT2*], table.cell(fill: rgb("#95ff39"))[0.9203], table.cell(fill: rgb("#95ff39"))[0.0928],
+    table.hline(stroke: 2pt + rgb("#020202")),
+    
+    // Groupe DBT2
+    table.cell(fill: bg-ndbt2)[*DBT2*], table.cell(fill: rgb("#6bb5ff"))[0.7054], table.cell(fill: rgb("#6bb5ff"))[0.2476],
+    table.cell(fill: bg-ndbt2)[*CGMacros + Libre DBT2*], table.cell(fill: rgb("#ffb639"))[0.6513], table.cell(fill: rgb("#ffb639"))[0.2659],
+    table.cell(fill: bg-ndbt2)[*CGMacros + Dexcom DBT2*], table.cell(fill: rgb("#ff7b39"))[0.7167], table.cell(fill: rgb("#ff7b39"))[0.2396],
+    table.cell(fill: bg-ndbt2)[*Hall DBT2*], table.cell(fill: rgb("#95ff39"))[0.7751], table.cell(fill: rgb("#95ff39"))[0.2100]
+  ),
+  caption: [Normalized weighted permutation entropy and MPR complexity for the centroids of each group of patients in the different datasets]
+)
+
+== Classification performance with WPE
+With optimized weigthed permutation entropy and kmeans algortihm parameters, we obtained the following classification performance inside each dataset:
+
+// Définition des couleurs
+#let bg-header = rgb("#f1f5f9") // Ardoise clair pour l'en-tête
+#let bg-zebra = rgb("#f8fafc")  // Gris très doux pour l'alternance
+#let border-color = rgb("#cbd5e1")
+
+// --- Premier Tableau ---
+#figure(
+  table(
+    columns: (1.5fr, 1fr, 1fr, 1fr, 1fr),
+    align: (left + horizon, center + horizon, center + horizon, center + horizon, center + horizon),
+    stroke: (x, y) => if y == 0 { none } else { 0.5pt + border-color },
+    fill: (x, y) => {
+      if y == 0 { bg-header }
+      else if calc.even(y) { bg-zebra }
+      else { none }
+    },
+    
+    table.header(
+      [*Group*], [*Balanced Accuracy*], [*F1-score*], [*Sensibility*], [*Specificity*]
+    ),
+
+    [*DBT2/NDBT2*], [0.97], [0.98], [1], [0.95],
+    [*CGMacros + Dexcom*], [0.86], [0.86], [0.80], [0.93],
+    [*CGMacros + Libre*], [0.86], [0.86], [0.80], [0.93],
+    [*Average CGMacros*], [0.86], [0.86], [0.80], [0.93],
+    [*DBT2/NDBT2 + CGMacros*], [0.91], [0.91], [0.88], [0.94],
+    [*Hall*], [0.79], [0.87], [0.79], [0.80]
+  ),
+  caption: [Classification performance of the Kmeans algorithm applied on the WHxC feature plane of the different datasets]
+)
+
+Then, we tested the centroids of given datasets to classify the other datasets:
+
+// --- Second Tableau ---
+#figure(
+  table(
+    columns: (1.3fr, 1.3fr, 1fr, 1fr, 1fr, 1fr),
+    align: (left + horizon, left + horizon, center + horizon, center + horizon, center + horizon, center + horizon),
+    stroke: (x, y) => if y == 0 { none } else { 0.5pt + border-color },
+    fill: (x, y) => {
+      if y == 0 { bg-header }
+      else if calc.even(y) { bg-zebra }
+      else { none }
+    },
+
+    table.header(
+      [*Group*], [*Centroids source*], [*Balanced Accuracy*], [*F1-score*], [*Sensibility*], [*Specificity*]
+    ),
+
+    [*CGMacros + Dexcom*], [DBT2/NDBT2], [0.83], [0.81], [0.73], [0.93],
+    [*CGMacros + Libre*], [DBT2/NDBT2], [0.93], [0.93], [0.87], [1.00],
+    [*Hall*], [DBT2/NDBT2 + CGMacros], [0.86], [0.95], [0.92], [0.80]
+  ),
+  caption: [Classification performance of the Kmeans algorithm applied on the WHxC feature plane of the different datasets using the centroids found with the Kmeans algorithm on other datasets]
+)
 
 = To try next
 == Multi-dimensional
