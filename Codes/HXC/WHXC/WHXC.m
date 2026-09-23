@@ -31,6 +31,16 @@ for i = 1:m
 end
 partition = tmp(t*m:end, :)';
 
+% Handle NaNs: Remove any embedding vector containing a NaN
+valid_cols = ~any(isnan(partition), 1);
+partition = partition(:, valid_cols);
+
+if isempty(partition) || size(partition, 2) < num_patterns
+    % Return NaNs if too many missing values are present
+    wpe = NaN; wpe_2 = NaN; wpe_norm = NaN; JSD = NaN; Comp_JS = NaN;
+    return;
+end
+
 % Calculo los pesos
 xm = mean(partition);
 weight = mean((partition - xm).^2);
@@ -45,8 +55,14 @@ for i = 1:num_patterns
     count(i) = sum(weight(idx == i));
 end
 
-% Probabilty distribution (length m!)
-p = count / sum(count);
+% Probabilty distribution
+total_weight = sum(count);
+if total_weight == 0
+    wpe = NaN; wpe_2 = NaN; wpe_norm = NaN; JSD = NaN; Comp_JS = NaN;
+    return;
+end
+
+p = count / total_weight;
 p_pos = p(p > 0);
 
 % WPE

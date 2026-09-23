@@ -60,6 +60,7 @@
   ]
 ]
 
+#outline()
 
 = Introduction
 
@@ -342,14 +343,6 @@ To find a more simple method of classification, we applied the Kmeans algorithm 
 
 #highlight(fill : yellow)[need to add the current distance]
 
-= To try next
-== Multi-dimensional
-- 2-D Permutation Entropy (see EntropyHUB) //see in the documentation how it's defined
-
-== Mono-dimensional
-On the glucose concentration ?
-- Fourier Spectrum
-- AUC (power density)
 
 #pagebreak()
 
@@ -746,3 +739,18 @@ Then, we tested the centroids of given datasets to classify the other datasets:
   ),
   caption: [Classification performance of the Kmeans algorithm applied on the HxC feature plane of the different datasets using the centroids found with the Kmeans algorithm on other datasets]
 )
+#pagebreak()
+= Going back to the weighted permutation entropy (WPE)
+In order to improve our study, we tried to do the same analysis using this time the weighted permutation entropy. 
+We already saw that the best set of parameters to compute the WPE was (m=4, $tau$=2). We then computed the HxC feature plane with these parameters on the different datasets:
+
+
+
+
+= To try next
+== Multi-dimensional
+- 2-D Permutation Entropy (see EntropyHUB) //see in the documentation how it's defined
+
+== Mono-dimensional
+- Fourier Spectrum
+- AUC (power density)
