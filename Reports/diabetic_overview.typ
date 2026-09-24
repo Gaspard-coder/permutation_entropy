@@ -1240,7 +1240,7 @@ Then, we tested the centroids of given datasets to classify the other datasets:
   ),
   caption: [Classification performance of the Kmeans algorithm applied on the WHxC feature plane of the different datasets using the centroids found with the Kmeans algorithm on other datasets]
 )
-
+#pagebreak()
 == Metric-by-Metric Performance Comparison: PE vs. WPE on raw and curated datasets
 
 We then added the performances on curated datasets to the previous comparison between PE and WPE on raw datasets. We can see that the performances are really improved with curated datasets, especially for the Hall dataset.
@@ -1265,18 +1265,18 @@ table.header(
 
 // Within-dataset
 table.cell(colspan: 6)[*Within-Dataset Clustering (Self-Trained Centroids)*],
-[*DBT2/NDBT2*], [K-Means (Self)], [0.98], [0.97], [1.00], text(fill: pos-green)[+0.03],
-[*CGMacros + Dexcom*], [K-Means (Self)], [0.79], [0.86], [0.96], text(fill: pos-green, weight: "bold")[+0.10],
-[*CGMacros + Libre*], [K-Means (Self)], [0.90], [0.86], [1.00], text(fill: pos-green, weight: "bold")[+0.14],
-[*Average CGMacros*], [K-Means (Self)], [0.845], [0.86], [0.98], text(fill: pos-green, weight: "bold")[+0.12],
-[*DBT2/NDBT2 + CGMacros*], [K-Means (Self)], [0.93], [0.91], [0.99], text(fill: pos-green)[+0.08],
-[*Hall*], [K-Means (Self)], [0.85], [0.79], [0.88], text(fill: pos-green)[+0.09],
+[*DBT2/NDBT2*], [K-Means (Self)], [0.98], [0.97], [*1.00*], text(fill: pos-green)[+0.03],
+[*CGMacros + Dexcom*], [K-Means (Self)], [0.79], [0.86], [*0.96*], text(fill: pos-green, weight: "bold")[+0.10],
+[*CGMacros + Libre*], [K-Means (Self)], [0.90], [0.86], [*1.00*], text(fill: pos-green, weight: "bold")[+0.14],
+[*Average CGMacros*], [K-Means (Self)], [0.845], [0.86], [*0.98*], text(fill: pos-green, weight: "bold")[+0.12],
+[*DBT2/NDBT2 + CGMacros*], [K-Means (Self)], [0.93], [0.91], [*0.99*], text(fill: pos-green)[+0.08],
+[*Hall*], [K-Means (Self)], [0.85], [0.79], [*0.88*], text(fill: pos-green)[+0.09],
 
 // Cross-dataset
 table.cell(colspan: 6)[*Cross-Dataset Centroid Validation Transfer*],
-[*CGMacros + Dexcom*], [DBT2/NDBT2], [0.83], [0.86], [0.96], text(fill: pos-green, weight: "bold")[+0.10],
-[*CGMacros + Libre*], [DBT2/NDBT2], [0.93], [0.90], [1.00], text(fill: pos-green, weight: "bold")[+0.10],
-[*Hall*], [DBT2/NDBT2 + CGMacros], [0.86], [0.75], [0.88], text(fill: pos-green, weight: "bold")[+0.13]
+[*CGMacros + Dexcom*], [DBT2/NDBT2], [0.83], [0.86], [*0.96*], text(fill: pos-green, weight: "bold")[+0.10],
+[*CGMacros + Libre*], [DBT2/NDBT2], [0.93], [0.90], [*1.00*], text(fill: pos-green, weight: "bold")[+0.10],
+[*Hall*], [DBT2/NDBT2 + CGMacros], [0.86], [0.75], [*0.88*], text(fill: pos-green, weight: "bold")[+0.13]
 
 ),
 caption: [Balanced Accuracy comparison between PE, WPE raw, and WPE curated feature spaces.]
@@ -1302,18 +1302,18 @@ table.header(
 
 // Within-dataset
 table.cell(colspan: 6)[*Within-Dataset Clustering (Self-Trained Centroids)*],
-[*DBT2/NDBT2*], [K-Means (Self)], [0.98], [0.98], [1.00], text(fill: pos-green)[+0.02],
-[*CGMacros + Dexcom*], [K-Means (Self)], [0.81], [0.86], [0.96], text(fill: pos-green, weight: "bold")[+0.10],
-[*CGMacros + Libre*], [K-Means (Self)], [0.90], [0.86], [1.00], text(fill: pos-green, weight: "bold")[+0.14],
-[*Average CGMacros*], [K-Means (Self)], [0.855], [0.86], [0.98], text(fill: pos-green, weight: "bold")[+0.12],
-[*DBT2/NDBT2 + CGMacros*], [K-Means (Self)], [0.93], [0.91], [0.99], text(fill: pos-green)[+0.08],
-[*Hall*], [K-Means (Self)], [0.93], [0.87], [0.98], text(fill: pos-green, weight: "bold")[+0.11],
+[*DBT2/NDBT2*], [K-Means (Self)], [0.98], [0.98], [*1.00*], text(fill: pos-green)[+0.02],
+[*CGMacros + Dexcom*], [K-Means (Self)], [0.81], [0.86], [*0.96*], text(fill: pos-green, weight: "bold")[+0.10],
+[*CGMacros + Libre*], [K-Means (Self)], [0.90], [0.86], [*1.00*], text(fill: pos-green, weight: "bold")[+0.14],
+[*Average CGMacros*], [K-Means (Self)], [0.855], [0.86], [*0.98*], text(fill: pos-green, weight: "bold")[+0.12],
+[*DBT2/NDBT2 + CGMacros*], [K-Means (Self)], [0.93], [0.91], [*0.99*], text(fill: pos-green)[+0.08],
+[*Hall*], [K-Means (Self)], [0.93], [0.87], [*0.98*], text(fill: pos-green, weight: "bold")[+0.11],
 
 // Cross-dataset
 table.cell(colspan: 6)[*Cross-Dataset Centroid Validation Transfer*],
-[*CGMacros + Dexcom*], [DBT2/NDBT2], [0.81], [0.86], [0.96], text(fill: pos-green, weight: "bold")[+0.10],
-[*CGMacros + Libre*], [DBT2/NDBT2], [0.93], [0.89], [1.00], text(fill: pos-green, weight: "bold")[+0.11],
-[*Hall*], [DBT2/NDBT2 + CGMacros], [0.95], [0.92], [0.98], text(fill: pos-green)[+0.06]
+[*CGMacros + Dexcom*], [DBT2/NDBT2], [0.81], [0.86], [*0.96*], text(fill: pos-green, weight: "bold")[+0.10],
+[*CGMacros + Libre*], [DBT2/NDBT2], [0.93], [0.89], [*1.00*], text(fill: pos-green, weight: "bold")[+0.11],
+[*Hall*], [DBT2/NDBT2 + CGMacros], [0.95], [0.92], [*0.98*], text(fill: pos-green)[+0.06]
 
 ),
 caption: [F1-Score performance comparison between PE, WPE raw, and WPE curated.]
@@ -1339,18 +1339,18 @@ table.header(
 
 // Within-dataset
 table.cell(colspan: 6)[*Within-Dataset Clustering (Self-Trained Centroids)*],
-[*DBT2/NDBT2*], [K-Means (Self)], [0.95], [1.00], [1.00], text(fill: neutral-slate)[0.00],
-[*CGMacros + Dexcom*], [K-Means (Self)], [0.87], [0.80], [0.92], text(fill: pos-green, weight: "bold")[+0.12],
-[*CGMacros + Libre*], [K-Means (Self)], [0.87], [0.80], [1.00], text(fill: pos-green, weight: "bold")[+0.20],
-[*Average CGMacros*], [K-Means (Self)], [0.87], [0.80], [0.96], text(fill: pos-green, weight: "bold")[+0.16],
-[*DBT2/NDBT2 + CGMacros*], [K-Means (Self)], [0.92], [0.88], [0.97], text(fill: pos-green)[+0.09],
-[*Hall*], [K-Means (Self)], [0.89], [0.79], [1.00], text(fill: pos-green, weight: "bold")[+0.21],
+[*DBT2/NDBT2*], [K-Means (Self)], [0.95], [1.00], [*1.00*], text(fill: neutral-slate)[0.00],
+[*CGMacros + Dexcom*], [K-Means (Self)], [0.87], [0.80], [*0.92*], text(fill: pos-green, weight: "bold")[+0.12],
+[*CGMacros + Libre*], [K-Means (Self)], [0.87], [0.80], [*1.00*], text(fill: pos-green, weight: "bold")[+0.20],
+[*Average CGMacros*], [K-Means (Self)], [0.87], [0.80], [*0.96*], text(fill: pos-green, weight: "bold")[+0.16],
+[*DBT2/NDBT2 + CGMacros*], [K-Means (Self)], [0.92], [0.88], [*0.97*], text(fill: pos-green)[+0.09],
+[*Hall*], [K-Means (Self)], [0.89], [0.79], [*1.00*], text(fill: pos-green, weight: "bold")[+0.21],
 
 // Cross-dataset
 table.cell(colspan: 6)[*Cross-Dataset Centroid Validation Transfer*],
-[*CGMacros + Dexcom*], [DBT2/NDBT2], [0.73], [0.80], [0.92], text(fill: pos-green, weight: "bold")[+0.12],
-[*CGMacros + Libre*], [DBT2/NDBT2], [0.87], [0.80], [1.00], text(fill: pos-green, weight: "bold")[+0.20],
-[*Hall*], [DBT2/NDBT2 + CGMacros], [0.92], [0.89], [1.00], text(fill: pos-green, weight: "bold")[+0.11]
+[*CGMacros + Dexcom*], [DBT2/NDBT2], [0.73], [0.80], [*0.92*], text(fill: pos-green, weight: "bold")[+0.12],
+[*CGMacros + Libre*], [DBT2/NDBT2], [0.87], [0.80], [*1.00*], text(fill: pos-green, weight: "bold")[+0.20],
+[*Hall*], [DBT2/NDBT2 + CGMacros], [0.92], [0.89], [*1.00*], text(fill: pos-green, weight: "bold")[+0.11]
 
 ),
 caption: [Sensitivity (True Positive Rate) comparison between PE, WPE raw, and WPE curated.]
@@ -1376,18 +1376,18 @@ table.header(
 
 // Within-dataset
 table.cell(colspan: 6)[*Within-Dataset Clustering (Self-Trained Centroids)*],
-[*DBT2/NDBT2*], [K-Means (Self)], [0.91], [0.95], [1.00], text(fill: pos-green)[+0.05],
-[*CGMacros + Dexcom*], [K-Means (Self)], [0.71], [0.93], [1.00], text(fill: pos-green)[+0.07],
-[*CGMacros + Libre*], [K-Means (Self)], [0.93], [0.93], [1.00], text(fill: pos-green)[+0.07],
-[*Average CGMacros*], [K-Means (Self)], [0.82], [0.93], [1.00], text(fill: pos-green)[+0.07],
-[*DBT2/NDBT2 + CGMacros*], [K-Means (Self)], [0.94], [0.94], [1.00], text(fill: pos-green)[+0.06],
-[*Hall*], [K-Means (Self)], [0.80], [0.80], [0.75], text(fill: neg-red)[-0.05],
+[*DBT2/NDBT2*], [K-Means (Self)], [0.91], [0.95], [*1.00*], text(fill: pos-green)[+0.05],
+[*CGMacros + Dexcom*], [K-Means (Self)], [0.71], [0.93], [*1.00*], text(fill: pos-green)[+0.07],
+[*CGMacros + Libre*], [K-Means (Self)], [0.93], [0.93], [*1.00*], text(fill: pos-green)[+0.07],
+[*Average CGMacros*], [K-Means (Self)], [0.82], [0.93], [*1.00*], text(fill: pos-green)[+0.07],
+[*DBT2/NDBT2 + CGMacros*], [K-Means (Self)], [0.94], [0.94], [*1.00*], text(fill: pos-green)[+0.06],
+[*Hall*], [K-Means (Self)], [0.80], [*0.80*], [0.75], text(fill: neg-red)[-0.05],
 
 // Cross-dataset
 table.cell(colspan: 6)[*Cross-Dataset Centroid Validation Transfer*],
-[*CGMacros + Dexcom*], [DBT2/NDBT2], [0.93], [0.93], [1.00], text(fill: pos-green)[+0.07],
-[*CGMacros + Libre*], [DBT2/NDBT2], [1.00], [1.00], [1.00], text(fill: neutral-slate)[0.00],
-[*Hall*], [DBT2/NDBT2 + CGMacros], [0.80], [0.60], [0.75], text(fill: pos-green, weight: "bold")[+0.15]
+[*CGMacros + Dexcom*], [DBT2/NDBT2], [0.93], [0.93], [*1.00*], text(fill: pos-green)[+0.07],
+[*CGMacros + Libre*], [DBT2/NDBT2], [1.00], [1.00], [*1.00*], text(fill: neutral-slate)[0.00],
+[*Hall*], [DBT2/NDBT2 + CGMacros], [0.80], [0.60], [*0.75*], text(fill: pos-green, weight: "bold")[+0.15]
 
 ),
 caption: [Specificity (True Negative Rate) comparison between PE, WPE raw, and WPE curated.]
