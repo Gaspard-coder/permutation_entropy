@@ -748,14 +748,14 @@ We already saw that the best set of parameters to compute the WPE was (m=4, $tau
 
 == Weigthed permutation entropy and complexity feature plane <WHXC>
 
-*Argentinian DBT2/NDBT2 dataset:*
+*Argentinian DBT2/NDBT2 raw dataset:*
 #figure(
   image("figures/Complexity-Weigthed Entropy Plane: Comparison 4-2.png", width: 120%),
   caption: [Comparison of the weighted permutation entropy for DBT2/NDBT2 dataset]
 )
 
 #pagebreak()
-*CGMacros dataset (dexcom and libre probes):*
+*CGMacros raw dataset (dexcom and libre probes):*
 #figure(
   image("figures/Complexity-Weigthed Entropy Plane: Comparison dexcom 4-2.png", width: 120%),
   caption: [Comparison of the weighted permutation entropy for CGMacros dataset using dexcom probe]
@@ -766,13 +766,13 @@ We already saw that the best set of parameters to compute the WPE was (m=4, $tau
   caption: [Comparison of the weighted permutation entropy for CGMacros dataset using libre probe]
 )
 
-*Combined DBT2/NDBT2 and CGMacros datasets:*
+*Combined DBT2/NDBT2 and CGMacros raw datasets:*
 #figure(
   image("figures/Complexity-Weigthed Entropy Plane: Comparison all 4-2.png", width: 120%),
   caption: [Comparison of the weighted permutation entropy for mixed NDBT2/DBT2 and CGMacros datasets]
 )
 
-*Hall dataset:*
+*Hall raw dataset:*
 #figure(
   image("figures/Complexity-Weigthed Entropy Plane: Comparison Hall 4-2.png", width: 120%),
   caption: [Comparison of the weighted permutation entropy for Hall dataset]
@@ -785,7 +785,7 @@ We already can make several observations:
 
 Let's first try to apply the Kmeans algorithm on raw datas, at least as a future point of comparison with eventually curated datasets.
 
-== Kmeans algorithm parameters selection with WPE
+== Kmeans algorithm parameters selection with WPE <Wkmeans_param>
 We applied the same parameters sweep as in @kmeans_param to the best working dataset i.e. DBT2/NDBT2 this time with (m=4, $tau$=2) parameters.
 
 This time, we achieved to find configurations that hit all 4 best metrics. More precisely, we got 180 "perfect" configurations out of 240 tested.
@@ -1117,10 +1117,281 @@ caption: [Specificity (True Negative Rate) comparison between PE and WPE.]
 As we saw in @WHXC, the weighted permutation entropy makes appear more outliers in the datasets then the regular PE. We now tried to curate datasets in order to better compare PE and WPE performances.
 
 == Spotting the outliers
+We should now define a criteria to spot the outliers. To stay consistent with on the previous work, we will use the distance to the cluster centroids as a criteria, obtained with the Kmeans algorithm using optimized parameters of @Wkmeans_param.
 
-=== DBT2/NDBT2 dataset
 
+=== Illustration of the curation method on the DBT2/NDBT2 dataset
+Here are the uncurated WHxC feature plane of the diabetics patients of the DBT2/NDBT2 dataset:
 
+#figure(
+  image("figures/WHxC Feature Plane - DBT2 (m=4, tau=2).png", width: 120%),
+  caption: [Weighted Permutation Entropy Feature Plane - DBT2 (m=4, tau=2)]
+)
+
+Just by looking at the figure, we can suppose that the points 1, 3 and 15 are good candidates to be outliers.
+We then computed the distance to the cluster centroids:
+
+#figure(
+  image("figures/Centroid Distance per Point - DBT2.png", width: 120%),
+  caption: [Distance to cluster centroids for each point of the DBT2/NDBT2 dataset using the Kmeans algorithm with optimized parameters (m=4, tau=2)]
+)
+As thresolds, we used the standard deviation and the doubled of the standard deviation of the distances to the cluster centroids. 
+And indeed, 1, 3 and 15 are largely above the first standard deviation thresold and even to the doubled standard deviation one for some. We can then consider removing these points to build the curated dataset.
+
+After applying the same process on the non diabetic patients of the same dataset, we obtained the following kmeans performances:
+
+#figure(
+  image("figures/WHxC K-Means Classification DBT2 curated.png", width: 120%),
+  caption: [Kmeans algorithm applied on the WHxC feature plane of the curated DBT2/NDBT2 dataset with (m=4, $tau$=2) parameters ]
+)
+
+#figure(
+  image("figures/Distance to Cluster Centroids DBT2 curated.png", width: 100%),
+)
+
+Perfect performances! It is not very surprising given the fact that we used the DBT2/NDBT2 dataset to calibrate the (m, $tau$) parameters and the Kmeans algorithm parameters. But it is a good sign that the curation method is working well.
+
+== Kmeans algorithm performances with WPE on curated datasets
+After currating all the datasets, we carried the same analysiswith (m=4, $tau$=2) parameters and Kmeans algorithm parameters:
+- Distance metric: `sqeuclidean`
+- Maximum of Iteration: 100
+- Replicates: 1
+- Starting cluster centroid: `plus`
+
+#figure(
+  table(
+    columns: (1.2fr, 1fr, 1fr),
+    align: (left + horizon, center + horizon, center + horizon),
+    stroke: (x, y) => if y == 0 { none } else { 0.5pt + rgb("#e2e8f0") }, // Bordures fines
+    table.header([*Curated dataset*], [*Normalized weighted permutation entropy (H)*], [*MPR complexity (C)*]),
+    
+    // Groupe NDBT2
+    table.cell(fill: bg-dbt2)[*NDBT2*], table.cell(fill: rgb("#6bb5ff"))[0.9386], table.cell(fill: rgb("#6bb5ff"))[0.0733],
+    table.cell(fill: bg-dbt2)[*CGMacros + Libre NDBT2*], table.cell(fill: rgb("#ffb639"))[0.8857], table.cell(fill: rgb("#ffb639"))[0.1225],
+    table.cell(fill: bg-dbt2)[*CGMacros + Dexcom NDBT2*], table.cell(fill: rgb("#ff7b39"))[0.9241], table.cell(fill: rgb("#ff7b39"))[0.0835],
+    table.cell(fill: bg-dbt2)[*NDBT2 + CGMacros*], table.cell(fill: rgb("#ff72c7"))[0.9192], table.cell(fill: rgb("#ff72c7"))[0.0903],
+    table.cell(fill: bg-dbt2)[*Hall NDBT2*], table.cell(fill: rgb("#95ff39"))[0.9117], table.cell(fill: rgb("#95ff39"))[0.1010],
+    table.hline(stroke: 2pt + rgb("#020202")),
+    
+    // Groupe DBT2
+    table.cell(fill: bg-ndbt2)[*DBT2*], table.cell(fill: rgb("#6bb5ff"))[0.7210], table.cell(fill: rgb("#6bb5ff"))[0.2429],
+    table.cell(fill: bg-ndbt2)[*CGMacros + Libre DBT2*], table.cell(fill: rgb("#ffb639"))[0.6458], table.cell(fill: rgb("#ffb639"))[0.2698],
+    table.cell(fill: bg-ndbt2)[*CGMacros + Dexcom DBT2*], table.cell(fill: rgb("#ff7b39"))[0.7123], table.cell(fill: rgb("#ff7b39"))[0.2431],
+    table.cell(fill: bg-dbt2)[*DBT2 + CGMacros*], table.cell(fill: rgb("#ff72c7"))[0.6958], table.cell(fill: rgb("#ff72c7"))[0.2510],
+    table.cell(fill: bg-ndbt2)[*Hall DBT2*], table.cell(fill: rgb("#95ff39"))[0.6575], table.cell(fill: rgb("#95ff39"))[0.2707]
+  ),
+  caption: [Normalized weighted permutation entropy and MPR complexity for the centroids of each group of patients in the different *curated* datasets]
+)
+
+We then obtained the following classification performance inside each dataset:
+
+// Définition des couleurs
+#let bg-header = rgb("#f1f5f9") // Ardoise clair pour l'en-tête
+#let bg-zebra = rgb("#f8fafc")  // Gris très doux pour l'alternance
+#let border-color = rgb("#cbd5e1")
+
+// --- Premier Tableau ---
+#figure(
+  table(
+    columns: (1.5fr, 1fr, 1fr, 1fr, 1fr),
+    align: (left + horizon, center + horizon, center + horizon, center + horizon, center + horizon),
+    stroke: (x, y) => if y == 0 { none } else { 0.5pt + border-color },
+    fill: (x, y) => {
+      if y == 0 { bg-header }
+      else if calc.even(y) { bg-zebra }
+      else { none }
+    },
+    
+    table.header(
+      [*Curated group*], [*Balanced Accuracy*], [*F1-score*], [*Sensibility*], [*Specificity*]
+    ),
+
+    [*DBT2/NDBT2*], [1.00], [1.00], [1.00], [1.00],
+    [*CGMacros + Dexcom*], [0.96], [0.96], [0.92], [1.00],
+    [*CGMacros + Libre*], [1.00], [1.00], [1.00], [1.00],
+    [*Average CGMacros*], [0.98], [0.98], [0.96], [1.00],
+    [*DBT2/NDBT2 + CGMacros*], [0.99], [0.99], [0.97], [1.00],
+    [*Hall*], [0.88], [0.98], [1.00], [0.75]
+  ),
+  caption: [Classification performance of the Kmeans algorithm applied on the WHxC feature plane of the different datasets]
+)
+
+Then, we tested the centroids of given datasets to classify the other datasets:
+
+// --- Second Tableau ---
+#figure(
+  table(
+    columns: (1.3fr, 1.3fr, 1fr, 1fr, 1fr, 1fr),
+    align: (left + horizon, left + horizon, center + horizon, center + horizon, center + horizon, center + horizon),
+    stroke: (x, y) => if y == 0 { none } else { 0.5pt + border-color },
+    fill: (x, y) => {
+      if y == 0 { bg-header }
+      else if calc.even(y) { bg-zebra }
+      else { none }
+    },
+
+    table.header(
+      [*Curated group*], [*Centroids source*], [*Balanced Accuracy*], [*F1-score*], [*Sensibility*], [*Specificity*]
+    ),
+
+    [*CGMacros + Dexcom*], [DBT2/NDBT2], [0.96], [0.96], [0.92], [1.00],
+    [*CGMacros + Libre*], [DBT2/NDBT2], [1.00], [1.00], [1.00], [1.00],
+    [*Hall*], [DBT2/NDBT2 + CGMacros], [0.88], [0.98], [1.00], [0.75]
+  ),
+  caption: [Classification performance of the Kmeans algorithm applied on the WHxC feature plane of the different datasets using the centroids found with the Kmeans algorithm on other datasets]
+)
+
+== Metric-by-Metric Performance Comparison: PE vs. WPE on raw and curated datasets
+
+We then added the performances on curated datasets to the previous comparison between PE and WPE on raw datasets. We can see that the performances are really improved with curated datasets, especially for the Hall dataset.
+
+=== Balanced Accuracy Comparison
+
+#figure(
+table(
+columns: (1.8fr, 1.6fr, 0.9fr, 1.1fr, 1.3fr, 1.1fr),
+align: (left + horizon, left + horizon, center + horizon, center + horizon, center + horizon, center + horizon),
+stroke: (x, y) => if y == 0 { none } else { 0.5pt + border-color },
+fill: (x, y) => {
+if y == 0 { bg-header }
+else if y == 1 or y == 8 { bg-section }
+else if calc.even(y) { bg-zebra }
+else { none }
+},
+
+table.header(
+  [*Target Group*], [*Evaluation Context / Centroids*], [*PE Acc.*], [*WPE raw Acc.*], [*WPE curated Acc.*], [*Acc. $Delta$*]
+),
+
+// Within-dataset
+table.cell(colspan: 6)[*Within-Dataset Clustering (Self-Trained Centroids)*],
+[*DBT2/NDBT2*], [K-Means (Self)], [0.98], [0.97], [1.00], text(fill: pos-green)[+0.03],
+[*CGMacros + Dexcom*], [K-Means (Self)], [0.79], [0.86], [0.96], text(fill: pos-green, weight: "bold")[+0.10],
+[*CGMacros + Libre*], [K-Means (Self)], [0.90], [0.86], [1.00], text(fill: pos-green, weight: "bold")[+0.14],
+[*Average CGMacros*], [K-Means (Self)], [0.845], [0.86], [0.98], text(fill: pos-green, weight: "bold")[+0.12],
+[*DBT2/NDBT2 + CGMacros*], [K-Means (Self)], [0.93], [0.91], [0.99], text(fill: pos-green)[+0.08],
+[*Hall*], [K-Means (Self)], [0.85], [0.79], [0.88], text(fill: pos-green)[+0.09],
+
+// Cross-dataset
+table.cell(colspan: 6)[*Cross-Dataset Centroid Validation Transfer*],
+[*CGMacros + Dexcom*], [DBT2/NDBT2], [0.83], [0.86], [0.96], text(fill: pos-green, weight: "bold")[+0.10],
+[*CGMacros + Libre*], [DBT2/NDBT2], [0.93], [0.90], [1.00], text(fill: pos-green, weight: "bold")[+0.10],
+[*Hall*], [DBT2/NDBT2 + CGMacros], [0.86], [0.75], [0.88], text(fill: pos-green, weight: "bold")[+0.13]
+
+),
+caption: [Balanced Accuracy comparison between PE, WPE raw, and WPE curated feature spaces.]
+)
+
+=== F1-Score Comparison
+
+#figure(
+table(
+columns: (1.8fr, 1.6fr, 0.9fr, 1.1fr, 1.3fr, 1.1fr),
+align: (left + horizon, left + horizon, center + horizon, center + horizon, center + horizon, center + horizon),
+stroke: (x, y) => if y == 0 { none } else { 0.5pt + border-color },
+fill: (x, y) => {
+if y == 0 { bg-header }
+else if y == 1 or y == 8 { bg-section }
+else if calc.even(y) { bg-zebra }
+else { none }
+},
+
+table.header(
+  [*Target Group*], [*Evaluation Context / Centroids*], [*PE F1*], [*WPE raw F1*], [*WPE curated F1*], [*F1 $Delta$*]
+),
+
+// Within-dataset
+table.cell(colspan: 6)[*Within-Dataset Clustering (Self-Trained Centroids)*],
+[*DBT2/NDBT2*], [K-Means (Self)], [0.98], [0.98], [1.00], text(fill: pos-green)[+0.02],
+[*CGMacros + Dexcom*], [K-Means (Self)], [0.81], [0.86], [0.96], text(fill: pos-green, weight: "bold")[+0.10],
+[*CGMacros + Libre*], [K-Means (Self)], [0.90], [0.86], [1.00], text(fill: pos-green, weight: "bold")[+0.14],
+[*Average CGMacros*], [K-Means (Self)], [0.855], [0.86], [0.98], text(fill: pos-green, weight: "bold")[+0.12],
+[*DBT2/NDBT2 + CGMacros*], [K-Means (Self)], [0.93], [0.91], [0.99], text(fill: pos-green)[+0.08],
+[*Hall*], [K-Means (Self)], [0.93], [0.87], [0.98], text(fill: pos-green, weight: "bold")[+0.11],
+
+// Cross-dataset
+table.cell(colspan: 6)[*Cross-Dataset Centroid Validation Transfer*],
+[*CGMacros + Dexcom*], [DBT2/NDBT2], [0.81], [0.86], [0.96], text(fill: pos-green, weight: "bold")[+0.10],
+[*CGMacros + Libre*], [DBT2/NDBT2], [0.93], [0.89], [1.00], text(fill: pos-green, weight: "bold")[+0.11],
+[*Hall*], [DBT2/NDBT2 + CGMacros], [0.95], [0.92], [0.98], text(fill: pos-green)[+0.06]
+
+),
+caption: [F1-Score performance comparison between PE, WPE raw, and WPE curated.]
+)
+
+== Sensitivity Comparison
+
+#figure(
+table(
+columns: (1.8fr, 1.6fr, 0.9fr, 1.1fr, 1.3fr, 1.1fr),
+align: (left + horizon, left + horizon, center + horizon, center + horizon, center + horizon, center + horizon),
+stroke: (x, y) => if y == 0 { none } else { 0.5pt + border-color },
+fill: (x, y) => {
+if y == 0 { bg-header }
+else if y == 1 or y == 8 { bg-section }
+else if calc.even(y) { bg-zebra }
+else { none }
+},
+
+table.header(
+  [*Target Group*], [*Evaluation Context / Centroids*], [*PE Sens.*], [*WPE raw Sens.*], [*WPE curated Sens.*], [*Sens. $Delta$*]
+),
+
+// Within-dataset
+table.cell(colspan: 6)[*Within-Dataset Clustering (Self-Trained Centroids)*],
+[*DBT2/NDBT2*], [K-Means (Self)], [0.95], [1.00], [1.00], text(fill: neutral-slate)[0.00],
+[*CGMacros + Dexcom*], [K-Means (Self)], [0.87], [0.80], [0.92], text(fill: pos-green, weight: "bold")[+0.12],
+[*CGMacros + Libre*], [K-Means (Self)], [0.87], [0.80], [1.00], text(fill: pos-green, weight: "bold")[+0.20],
+[*Average CGMacros*], [K-Means (Self)], [0.87], [0.80], [0.96], text(fill: pos-green, weight: "bold")[+0.16],
+[*DBT2/NDBT2 + CGMacros*], [K-Means (Self)], [0.92], [0.88], [0.97], text(fill: pos-green)[+0.09],
+[*Hall*], [K-Means (Self)], [0.89], [0.79], [1.00], text(fill: pos-green, weight: "bold")[+0.21],
+
+// Cross-dataset
+table.cell(colspan: 6)[*Cross-Dataset Centroid Validation Transfer*],
+[*CGMacros + Dexcom*], [DBT2/NDBT2], [0.73], [0.80], [0.92], text(fill: pos-green, weight: "bold")[+0.12],
+[*CGMacros + Libre*], [DBT2/NDBT2], [0.87], [0.80], [1.00], text(fill: pos-green, weight: "bold")[+0.20],
+[*Hall*], [DBT2/NDBT2 + CGMacros], [0.92], [0.89], [1.00], text(fill: pos-green, weight: "bold")[+0.11]
+
+),
+caption: [Sensitivity (True Positive Rate) comparison between PE, WPE raw, and WPE curated.]
+)
+
+== Specificity Comparison
+
+#figure(
+table(
+columns: (1.8fr, 1.6fr, 0.9fr, 1.1fr, 1.3fr, 1.1fr),
+align: (left + horizon, left + horizon, center + horizon, center + horizon, center + horizon, center + horizon),
+stroke: (x, y) => if y == 0 { none } else { 0.5pt + border-color },
+fill: (x, y) => {
+if y == 0 { bg-header }
+else if y == 1 or y == 8 { bg-section }
+else if calc.even(y) { bg-zebra }
+else { none }
+},
+
+table.header(
+  [*Target Group*], [*Evaluation Context / Centroids*], [*PE Spec.*], [*WPE raw Spec.*], [*WPE curated Spec.*], [*Spec. $Delta$*]
+),
+
+// Within-dataset
+table.cell(colspan: 6)[*Within-Dataset Clustering (Self-Trained Centroids)*],
+[*DBT2/NDBT2*], [K-Means (Self)], [0.91], [0.95], [1.00], text(fill: pos-green)[+0.05],
+[*CGMacros + Dexcom*], [K-Means (Self)], [0.71], [0.93], [1.00], text(fill: pos-green)[+0.07],
+[*CGMacros + Libre*], [K-Means (Self)], [0.93], [0.93], [1.00], text(fill: pos-green)[+0.07],
+[*Average CGMacros*], [K-Means (Self)], [0.82], [0.93], [1.00], text(fill: pos-green)[+0.07],
+[*DBT2/NDBT2 + CGMacros*], [K-Means (Self)], [0.94], [0.94], [1.00], text(fill: pos-green)[+0.06],
+[*Hall*], [K-Means (Self)], [0.80], [0.80], [0.75], text(fill: neg-red)[-0.05],
+
+// Cross-dataset
+table.cell(colspan: 6)[*Cross-Dataset Centroid Validation Transfer*],
+[*CGMacros + Dexcom*], [DBT2/NDBT2], [0.93], [0.93], [1.00], text(fill: pos-green)[+0.07],
+[*CGMacros + Libre*], [DBT2/NDBT2], [1.00], [1.00], [1.00], text(fill: neutral-slate)[0.00],
+[*Hall*], [DBT2/NDBT2 + CGMacros], [0.80], [0.60], [0.75], text(fill: pos-green, weight: "bold")[+0.15]
+
+),
+caption: [Specificity (True Negative Rate) comparison between PE, WPE raw, and WPE curated.]
+)
 
 #pagebreak()
 = To try next
