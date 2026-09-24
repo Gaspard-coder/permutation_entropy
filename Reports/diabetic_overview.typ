@@ -1393,6 +1393,26 @@ table.cell(colspan: 6)[*Cross-Dataset Centroid Validation Transfer*],
 caption: [Specificity (True Negative Rate) comparison between PE, WPE raw, and WPE curated.]
 )
 
+The improvement of the performances with curated datasets is really significant. And the performances are now much more consistent across all datasets and metrics.
+Finally, we can apply the Kmeans algorithm on the mixed of the three curated databases:
+
+#figure(
+  image("figures/WHxC K-Means Classification Ar_CGMacros_Hall.png", width: 120%),
+  caption: [Kmeans algorithm applied on the WHxC feature plane of the mixed of the three curated datasets with (m=4, $tau$=2) parameters ]
+)
+
+#figure(
+  image("figures/Distance to Cluster Centroids Ar_CGMacros_Hall.png", width: 100%),
+  caption: [Distance to Cluster Centroids for the mixed of the three curated datasets.]
+)
+
+#rslt[
+  We finally obtained clusters coordinates (Cluster healthy : WH = 0.9158, C = 0.0951
+  and cluster sick : WH = 0.6931, C = 0.2524) to classify any new patient with strong quality metrics:
+  
+  #align(center)[*Balanced Accuracy = 0.98, F1-score = 0.99, Sensibility = 0.99\ and Specificity = 0.98*]
+]
+
 #pagebreak()
 = To try next
 == Multi-dimensional
