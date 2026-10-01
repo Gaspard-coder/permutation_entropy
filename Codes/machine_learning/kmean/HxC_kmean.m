@@ -13,7 +13,8 @@ X = [Features_Healthy; Features_Sick];
 Y = [ones(size(Features_Healthy, 1), 1); -ones(size(Features_Sick, 1), 1)];
 
 % k-means clustering with centroid extraction and distance matrix D
-[idx, C_cosine, ~, D] = kmeans(X, k, 'Distance', 'cosine', 'Replicates', 1, 'MaxIter', 100, 'Start', 'plus');
+%[idx, C_cosine, ~, D] = kmeans(X, k, 'Distance', 'cosine', 'Replicates', 1, 'MaxIter', 100, 'Start', 'plus');
+[idx, C_cosine, ~, D] = kmeans(X, k, 'Distance', 'cosine', 'Replicates', 5, 'MaxIter', 1000, 'Start', 'sample');
 
 % Align clusters to ground truth: ensure Cluster 1 corresponds to Healthy (+1)
 if mean(Y(idx == 1)) < mean(Y(idx == 2))

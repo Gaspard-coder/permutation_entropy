@@ -89,7 +89,7 @@ function [H_std,C_std] = HXC_standard_deviation(m,t,data_folder)
 
     % B. Plot the area (all individual points in light blue)
     h_area = scatter(H_values, C_values, 40, [0.4 0.7 0.9], 'filled', ...
-        'MarkerFaceAlpha', 0.6, 'MarkerEdgeColor', 'none', ...
+        'MarkerFaceAlpha', 0.90, 'MarkerEdgeColor', 'none', ...
         'DisplayName', 'Individual Signals');
 
     % C. Plot the centroid and Standard Deviation error bars
@@ -97,14 +97,14 @@ function [H_std,C_std] = HXC_standard_deviation(m,t,data_folder)
      h_std = errorbar(H_mean, C_mean, C_std, C_std, H_std, H_std, 'o', ...
         'MarkerSize', 8, 'MarkerEdgeColor', 'k', 'MarkerFaceColor', 'y', ...
         'Color', 'k', 'LineWidth', 1.5, ...
-        'DisplayName', sprintf('Centroid \\pm 1 StdDev\n(H_{st}=%.3f, C_{st}=%.3f)', H_std, C_std));
+        'DisplayName', sprintf('Barycenter \\pm 1 StdDev\n(H_{st}=%.3f, C_{st}=%.3f)', H_std, C_std));
 
     % D. Formatting 
     xlabel('Normalized Permutation Entropy (H)', 'FontSize', 12, 'FontWeight', 'bold');
-    ylabel('Jensen-Shannon Complexity (C)', 'FontSize', 12, 'FontWeight', 'bold');
-    title(sprintf('Distribution and Standard Deviation - %s (m=%d, t=%d)', folder_name, m, t), ...
-        'FontSize', 14, 'FontWeight', 'bold', 'Interpreter', 'none');
-    
+    ylabel('Complexity (C)', 'FontSize', 12, 'FontWeight', 'bold');
+    % title(sprintf('Distribution and Standard Deviation - %s (m=%d, t=%d)', folder_name, m, t), ...
+    %     'FontSize', 14, 'FontWeight', 'bold', 'Interpreter', 'none');
+    % 
     xlim([0 1]);
     ylim([0 max([max(C_max), max(C_values)]) * 1.15]); 
     legend([h_cmax; h_cmin; h_area; h_std], 'Location', 'northeastoutside');
