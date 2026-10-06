@@ -2,11 +2,11 @@ clear;
 clc;
 
 % Archivo FIG
-archivo_fig = '/home/gaspichou/Documents/git/permutation_entropy/DBT2_article/figures/kmeans_ex.fig';
+archivo_fig = '/home/gaspichou/Documents/git/permutation_entropy/DBT2_article/figures/Symbolic Dynamics and Permutation Complexity.fig';
 
 
 % Archivo PDF
-archivo_pdf = '/home/gaspichou/Documents/git/permutation_entropy/DBT2_article/figures/kmeans_ex.pdf';
+archivo_pdf = '/home/gaspichou/Documents/git/permutation_entropy/DBT2_article/figures/Symbolic Dynamics and Permutation Complexity.pdf';
 
 % Abrir figura
 h = openfig(archivo_fig, 'invisible');

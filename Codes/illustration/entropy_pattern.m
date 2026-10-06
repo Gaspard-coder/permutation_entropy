@@ -64,9 +64,9 @@ highlight_pattern_str = sprintf('(%s)', join(string(patterns(highlight_idx,:)), 
 text(h_idx(2) + 0.1, x(h_idx(2)) + 1, highlight_pattern_str, 'FontSize', 12, 'FontWeight', 'bold');
 
 % Formatting
-title(sprintf('x = [%s], m = %d, \\tau = %d', num2str(x), m, tau), 'FontSize', 12, 'FontWeight', 'bold');
-ylabel('x', 'FontSize', 12, 'FontWeight', 'bold');
-xlabel('i', 'FontSize', 12, 'FontWeight', 'bold');
+title(sprintf('x = [%s], m = %d, \\tau = %d', num2str(x), m, tau), 'FontSize', 14, 'FontWeight', 'bold');
+ylabel('x', 'FontSize', 14, 'FontWeight', 'bold');
+xlabel('i', 'FontSize', 14, 'FontWeight', 'bold');
 xlim([0.5, N + 0.5]);
 ylim([min(x)-1, max(x)+2]);
 grid on; set(gca, 'GridLineStyle', ':');
@@ -82,7 +82,7 @@ ytick_labels = arrayfun(@(v) sprintf('%d/%d', v, num_vectors), 0:max_count, 'Uni
 ytick_labels{1} = '0';
 
 set(gca, 'YTick', yticks_vals, 'YTickLabel', ytick_labels);
-ylabel({'relative frequency', 'p_i'}, 'FontSize', 12, 'FontWeight', 'bold');
+ylabel({'relative frequency', 'p_i'}, 'FontSize', 14, 'FontWeight', 'bold');
 set(gca, 'XTick', 1:num_perms, 'XTickLabel', []);
 xlim([0.5, num_perms + 0.5]);
 ylim([0, max_count / num_vectors]);
@@ -104,8 +104,8 @@ for i = 1:num_perms
 end
 
 set(gca, 'XTick', 1:num_perms, 'XTickLabel', labels, 'FontSize', 10, 'FontWeight', 'bold');
-ylabel({'rank value', 'in sequence'}, 'FontSize', 12, 'FontWeight', 'bold');
-xlabel('i^{th} permutation pattern', 'FontSize', 12, 'FontWeight', 'bold');
+ylabel({'rank value', 'in sequence'}, 'FontSize', 14, 'FontWeight', 'bold');
+xlabel('i^{th} permutation pattern', 'FontSize', 14, 'FontWeight', 'bold');
 xlim([0.5, num_perms + 0.5]);
 ylim([0.5, m + 0.5]);
 set(gca, 'YTick', 1:m);

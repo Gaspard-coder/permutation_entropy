@@ -84,24 +84,24 @@ function [H_std,C_std] = HXC_standard_deviation(m,t,data_folder)
     hold on; grid on;
 
     % A. Plot theoretical bounds 
-    h_cmax = plot(H_max, C_max, 'k-', 'LineWidth', 2, 'DisplayName', sprintf('C_{max} (m=%d)', m));
-    h_cmin = plot(H_min, C_min, 'r-', 'LineWidth', 2, 'DisplayName', sprintf('C_{min} (m=%d)', m));
+    h_cmax = plot(H_max, C_max, 'k-', 'LineWidth', 2, 'DisplayName', sprintf('\\fontsize{10}C_{max} (m=%d)', m));
+    h_cmin = plot(H_min, C_min, 'k--', 'LineWidth', 2, 'DisplayName', sprintf('\\fontsize{10}C_{min} (m=%d)', m));
 
     % B. Plot the area (all individual points in light blue)
     h_area = scatter(H_values, C_values, 40, [0.4 0.7 0.9], 'filled', ...
         'MarkerFaceAlpha', 0.90, 'MarkerEdgeColor', 'none', ...
-        'DisplayName', 'Individual Signals');
+        'DisplayName', sprintf('\\fontsize{10}Individual Signals'));
 
     % C. Plot the centroid and Standard Deviation error bars
     % Using errorbar to show  H_std and C_std as a crosshair
      h_std = errorbar(H_mean, C_mean, C_std, C_std, H_std, H_std, 'o', ...
         'MarkerSize', 8, 'MarkerEdgeColor', 'k', 'MarkerFaceColor', 'y', ...
         'Color', 'k', 'LineWidth', 1.5, ...
-        'DisplayName', sprintf('Barycenter \\pm 1 StdDev\n(H_{st}=%.3f, C_{st}=%.3f)', H_std, C_std));
+        'DisplayName', sprintf('\\fontsize{10}Barycenter \\pm 1 StdDev\n(H_{st}=%.3f, C_{st}=%.3f)', H_std, C_std));
 
     % D. Formatting 
-    xlabel('Normalized Permutation Entropy (H)', 'FontSize', 12, 'FontWeight', 'bold');
-    ylabel('Complexity (C)', 'FontSize', 12, 'FontWeight', 'bold');
+    xlabel('Normalized Permutation Entropy H', 'FontSize', 15, 'FontWeight', 'bold');
+    ylabel('Complexity C', 'FontSize', 15, 'FontWeight', 'bold');
     % title(sprintf('Distribution and Standard Deviation - %s (m=%d, t=%d)', folder_name, m, t), ...
     %     'FontSize', 14, 'FontWeight', 'bold', 'Interpreter', 'none');
     % 

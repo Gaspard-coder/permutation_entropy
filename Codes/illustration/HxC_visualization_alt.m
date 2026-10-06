@@ -1,131 +1,153 @@
-% Entropy-Causality Plane (HC Plane) Visualization
-clear; clc; close all;
+function HxC_visualization_alt()
+% Script optimisé pour le plan Causal Entropy-Complexity (H x C)
+m = 6; % Dimension d'encastrement (m = 3, 4, 5 ou 6)
 
-% =========================================================================
-% 1. PARAMETERS DEFINITION
-% =========================================================================
-m = 3; % Embedding dimension
+% 1. Calcul ultra-rapide des bornes théoriques (faible consommation RAM)
+[H_max, C_max, H_min, C_min] = compute_theoretical_bounds_fast(m);
 
-% =========================================================================
-% 2. COMPUTE THEORETICAL BOUNDS
-% =========================================================================
-[H_max, C_max, H_min, C_min] = compute_theoretical_bounds(m);
-
-% =========================================================================
-% 3. ENTROPY-CAUSALITY PLANE VISUALIZATION
-% =========================================================================
-fig = figure('Position', [150, 150, 800, 600], 'Color', 'w');
+% Création de la figure
+fig = figure('Name', 'HxC Causal Plane', 'Color', 'w', 'Position', [150 150 950 600]);
 hold on;
 
-% Fill the physically accessible region (between C_min and C_max)
-fill([H_max; flipud(H_min)], [C_max; flipud(C_min)], [0.9 0.9 0.9], ...
-    'EdgeColor', 'none', 'DisplayName', 'Accessible Region');
-
-% Plot theoretical boundary curves
-plot(H_max, C_max, 'k-', 'LineWidth', 2, 'DisplayName', 'Upper Bound (C_{max})');
-plot(H_min, C_min, 'k--', 'LineWidth', 2, 'DisplayName', 'Lower Bound (C_{min})');
+% Fonction anonyme pour interpoler la limite supérieure (C_max)
+getCMax = @(h_vals) interp1(H_max, C_max, h_vals, 'pchip');
 
 % =========================================================================
-% 4. DYNAMIC REGIONS ANNOTATIONS
+% 2. Courbe fBm (Orange / Jaune) & Fonction d'interpolation (Plancher)
 % =========================================================================
-% Random / Noise region
-text(0.9, 0.05, 'Random / Stochastic', 'FontSize', 12, 'FontWeight', 'bold', ...
-    'HorizontalAlignment', 'center', 'Color', [0 0.5 0], 'BackgroundColor', 'w', 'Margin', 2);
+h_fbm = linspace(0.37, 0.98, 100);
+c_fbm = pchip([0.37,0.42, 0.65, 0.85, 0.98], [0.25,0.28, 0.33, 0.25, 0.06], h_fbm);
 
-% Chaotic region
-text(0.65, max(C_max) - 0.05, 'Chaotic', 'FontSize', 12, 'FontWeight', 'bold', ...
-    'HorizontalAlignment', 'center', 'Color', [0.8 0.1 0.1], 'BackgroundColor', 'w', 'Margin', 2);
-
-% Deterministic / Periodic region
-text(0.15, 0.05, 'Deterministic / Periodic', 'FontSize', 12, 'FontWeight', 'bold', ...
-    'HorizontalAlignment', 'center', 'Color', [0 0 0.5], 'BackgroundColor', 'w', 'Margin', 2);
+% Fonction anonyme d'interpolation de la courbe fBm (renvoie 0 hors domaine)
+getCFbm = @(h_vals) interp1(h_fbm, c_fbm, h_vals, 'pchip', 0);
 
 % =========================================================================
-% 5. FIGURE FORMATTING
+% 3. Tracé des régions colorées (Strictement au-dessus de fBm)
 % =========================================================================
-title(sprintf('Entropy-Causality Plane (m = %d)', m), 'FontSize', 16, 'FontWeight', 'bold');
-xlabel('Normalized Permutation Entropy H', 'FontSize', 14, 'FontWeight', 'bold');
-ylabel('Statistical Complexity C', 'FontSize', 14, 'FontWeight', 'bold');
-xlim([0 1]);
-ylim([0 max(C_max) + 0.1]);
-grid on; set(gca, 'GridLineStyle', ':', 'FontSize', 12);
-legend('Location', 'NorthWest', 'FontSize', 11);
-box on;
+
+% Zone 2 (Rose clair) - Fond principal (s'appuie sur fBm)
+h2 = linspace(0.32, 0.88, 150);
+c2_top = getCMax(h2) - 0.001;
+c2_bot_raw = pchip([0.32, 0.42, 0.65, 0.88], ...
+    [0.32, getCFbm(0.42)+0.002, getCFbm(0.65)+0.002, getCFbm(0.88)+0.002], h2);
+c2_bot = max(c2_bot_raw, getCFbm(h2) + 0.002);
+patch([h2, fliplr(h2)], [c2_top, fliplr(c2_bot)], ...
+    [1 0.78 0.96], 'EdgeColor', 'none', 'FaceAlpha', 0.6);
+
+% Zone 1 (Violet) - Suit C_max au début, puis s'arrête sur la courbe fBm
+h1 = linspace(0.00, 0.45, 150);
+c1_top = pchip([0.0, 0.18, 0.32, 0.38, 0.45], ...
+    [0.0, getCMax(0.18), getCMax(0.32), getCMax(0.38), 0.312], h1);
+c1_bot_raw = pchip([0.0, 0.18, 0.32, 0.40, 0.45], ...
+    [0.0, 0.15, 0.22, 0.27, getCFbm(0.45)+0.002], h1);
+c1_bot = max(c1_bot_raw, getCFbm(h1) + 0.002);
+patch([h1, fliplr(h1)], [c1_top, fliplr(c1_bot)], ...
+    [0.78 0.68 1], 'EdgeColor', 'none', 'FaceAlpha', 0.65);
+
+% Zone 3 (Cyan / Turquoise) - Forme en goutte arrondie
+h3 = linspace(0.72, 1.00, 150);
+c3_top = getCMax(h3) - 0.001;
+c3_bot_raw = pchip([0.72, 0.78, 0.88, 0.96, 1.00], ...
+    [c3_top(1), getCFbm(0.78)+0.002, getCFbm(0.88)+0.002, 0.12, 0.00], h3);
+c3_bot = max(c3_bot_raw, getCFbm(h3) + 0.002);
+patch([h3, fliplr(h3)], [c3_top, fliplr(c3_bot)], ...
+    [0.0 0.82 0.82], 'EdgeColor', 'none', 'FaceAlpha', 0.7);
+
+% ==========================================
+% 4. Plot fBm Curve & Theoretical Boundaries
+% ==========================================
+% fBm line (Orange / Jaune)
+plot(h_fbm, c_fbm, 'Color', [1 0.6 0], 'LineWidth', 2.5);
+
+% Tracé des bornes théoriques
+plot(H_max, C_max, 'k-', 'LineWidth', 1.0);
+plot(H_min, C_min, 'k--', 'LineWidth', 1.0);
 
 % =========================================================================
-% HELPER FUNCTIONS
+% 5. Annotations et mise en forme du graphique
 % =========================================================================
-%% Helper Function: Compute Theoretical Curves
-function [H_max, C_max, H_min, C_min] = compute_theoretical_bounds(m)
-    dim = factorial(m);
-    num_points = 2000; % High resolution for smooth curves
-    
-    % Unified fine grid for Entropy H
-    H_grid = linspace(0, 1, num_points)';
-    C_max_all = zeros(num_points, dim - 1);
-    
-    % --- Upper bound curves (C_max) ---
-    for k = 1:(dim - 1)
-        p_vals = linspace(0, 1, num_points)';
-        P_k = zeros(num_points, dim);
-        P_k(:, 1:k) = repmat((1 - p_vals) / k, 1, k);
-        P_k(:, k+1) = p_vals;
-        
-        [H_k, C_k] = HXC_from_prob_vectorized(P_k);
-        
-        % Clean duplicates for monotonic interpolation
-        [H_k_unique, unique_idx] = unique(H_k);
-        C_k_unique = C_k(unique_idx);
-        
-        % Interpolate onto unified grid
-        C_max_all(:, k) = interp1(H_k_unique, C_k_unique, H_grid, 'pchip', 0);
-    end
-    
-    % Take the pointwise maximum across all generated k-curves
-    H_max = H_grid;
-    C_max = max(C_max_all, [], 2);
-    
-    % --- Lower bound curve (C_min) ---
-    p_vals_min = linspace(1/dim, 1, num_points)';
-    P_min = zeros(num_points, dim);
-    P_min(:, 1) = p_vals_min;
-    P_min(:, 2:dim) = repmat((1 - p_vals_min) / (dim - 1), 1, dim - 1);
-    
-    [H_min_raw, C_min_raw] = HXC_from_prob_vectorized(P_min);
-    
-    [H_min_unique, unique_idx] = unique(H_min_raw);
-    C_min_unique = C_min_raw(unique_idx);
-    
-    H_min = H_grid;
-    C_min = interp1(H_min_unique, C_min_unique, H_grid, 'pchip', 0);
+% Nombres des zones
+text(0.31, 0.27, '1', 'FontSize', 22, 'FontName', 'Arial');
+text(0.63, 0.46, '2', 'FontSize', 22, 'FontName', 'Arial');
+text(0.78, 0.36, '3', 'FontSize', 22, 'FontName', 'Arial');
+text(0.87, 0.25, '4', 'FontSize', 22, 'FontName', 'Arial');
+
+% Texte descriptif en haut à gauche
+text(0.08, 0.56, {'1 - Periodic or Deterministic'}, ...
+    'FontSize', 12, 'FontName', 'Arial', 'VerticalAlignment', 'top');
+text(0.08, 0.50, '2 - Chaotic', ...
+    'FontSize', 12, 'FontName', 'Arial', 'VerticalAlignment', 'top');
+text(0.08, 0.44, {'3 - Chaotic with', '       strong noise', '       component'}, ...
+    'FontSize', 12, 'FontName', 'Arial', 'VerticalAlignment', 'top');
+text(0.08, 0.36, {'4 - Random'}, ...
+    'FontSize', 12, 'FontName', 'Arial', 'VerticalAlignment', 'top');
+
+% Configuration des axes
+xlabel('Normalized Permutation Entropy H', 'FontSize', 15, 'FontWeight', 'bold');
+ylabel('Complexity C', 'FontSize', 15, 'FontWeight', 'bold');
+xlim([-0.02 1.02]);
+ylim([-0.02 0.62]);
+set(gca, 'XTick', 0:0.2:1.0, 'YTick', 0:0.1:0.6);
+
+grid off; box on;
+ax = gca;
+ax.TickDir = 'in';
+ax.XMinorTick = 'on';
+ax.YMinorTick = 'on';
+ax.LineWidth = 1.0;
+hold off;
 end
 
-%% Helper Function: Compute Normalized Entropy and Complexity
-function [H, C] = HXC_from_prob_vectorized(P)
-    [~, dim] = size(P);
-    
-    % Avoid log(0) numerical issues
-    P_safe = max(P, eps);
-    
-    % 1. Normalized Shannon Entropy (H)
-    S = -sum(P_safe .* log(P_safe), 2);
-    S_max = log(dim);
+%% --- Calcul Analytique Optimisé des Bornes (Consommation RAM ~ 0 Mo) ---
+function [H_max, C_max, H_min, C_min] = compute_theoretical_bounds_fast(m)
+dim = factorial(m);
+S_max = log(dim);
+
+% Constante de normalisation Q0 (D_max)
+P_ext_avg_1 = 0.5 * (1 + 1/dim);
+P_ext_avg_rest = 0.5 * (1/dim);
+S_ext_avg = - (P_ext_avg_1 * log(P_ext_avg_1) + (dim - 1) * P_ext_avg_rest * log(P_ext_avg_rest));
+D_max = S_ext_avg - 0.5 * S_max;
+Q0 = 1 / D_max;
+
+num_p = 100;
+
+% --- Upper Bound (C_max) ---
+H_max_list = [];
+C_max_list = [];
+for k = 1:(dim - 1)
+    p = linspace(1/(k+1), 1/k, num_p);
+    p_other = (1 - p) / k;
+    p_other_safe = max(p_other, eps);
+    S = - (k * p_other_safe .* log(p_other_safe) + p .* log(p));
     H = S / S_max;
-    
-    % 2. Jensen-Shannon Divergence
-    U = ones(1, dim) / dim;
-    P_plus_U_half = (P + U) / 2;
-    S_P_plus_U = -sum(P_plus_U_half .* log(P_plus_U_half), 2);
-    S_U = log(dim);
-    JS = S_P_plus_U - S / 2 - S_U / 2;
-    
-    % 3. Normalization constant Q0
-    P_delta = zeros(1, dim); P_delta(1) = 1;
-    P_delta_plus_U_half = (P_delta + U) / 2;
-    S_delta_plus_U = -sum(P_delta_plus_U_half .* log(P_delta_plus_U_half));
-    JS_max = S_delta_plus_U - 0 / 2 - S_U / 2;
-    Q0 = 1 / JS_max;
-    
-    % 4. Statistical Complexity (C)
-    C = Q0 * JS .* H;
+
+    a = 0.5 * p_other + 0.5 / dim;
+    b = 0.5 * p + 0.5 / dim;
+    c = 0.5 / dim;
+    S_avg = - (k * a .* log(a) + b .* log(b) + (dim - 1 - k) * c .* log(c));
+    D_JS = S_avg - 0.5 * S - 0.5 * S_max;
+    C = Q0 * D_JS .* H;
+
+    H_max_list = [H_max_list, H];
+    C_max_list = [C_max_list, C];
+end
+[H_max, sort_idx] = sort(H_max_list);
+C_max = C_max_list(sort_idx);
+
+% --- Lower Bound (C_min) ---
+p_min = linspace(1/dim, 1, 500);
+p_other_min = (1 - p_min) / (dim - 1);
+p_other_min_safe = max(p_other_min, eps);
+S_min = - (p_min .* log(p_min) + (dim - 1) * p_other_min_safe .* log(p_other_min_safe));
+H_min_val = S_min / S_max;
+
+u = 0.5 * p_min + 0.5 / dim;
+v = 0.5 * p_other_min + 0.5 / dim;
+S_avg_min = - (u .* log(u) + (dim - 1) * v .* log(v));
+D_JS_min = S_avg_min - 0.5 * S_min - 0.5 * S_max;
+C_min_val = Q0 * D_JS_min .* H_min_val;
+
+[H_min, sort_idx_min] = sort(H_min_val);
+C_min = C_min_val(sort_idx_min);
 end
