@@ -64,22 +64,22 @@ hold on; grid on;
 
 % Plot Healthy (+1) points
 scatter(X(is_healthy & is_correct, 1), X(is_healthy & is_correct, 2), 50, ...
-    color_h, 'o', 'filled', 'DisplayName', 'Healthy (+1) - Correct');
+    color_h, 'o', 'filled', 'DisplayName', sprintf('\\fontsize{12}Group 2 (+1) - Correct'));
 scatter(X(is_healthy & ~is_correct, 1), X(is_healthy & ~is_correct, 2), 70, ...
-    color_h, 'x', 'LineWidth', 2, 'DisplayName', 'Healthy (+1) - Misclassified');
+    color_h, 'x', 'LineWidth', 2, 'DisplayName', sprintf('\\fontsize{12}Group 2 (+1) - Misclassified'));
 
 % Plot Sick (-1) points
 scatter(X(is_sick & is_correct, 1), X(is_sick & is_correct, 2), 50, ...
-    color_s, 'o', 'filled', 'DisplayName', 'Sick (-1) - Correct');
+    color_s, 'o', 'filled', 'DisplayName', sprintf('\\fontsize{12}Group 1 (-1) - Correct'));
 scatter(X(is_sick & ~is_correct, 1), X(is_sick & ~is_correct, 2), 70, ...
-    color_s, 'x', 'LineWidth', 2, 'DisplayName', 'Sick (-1) - Misclassified');
+    color_s, 'x', 'LineWidth', 2, 'DisplayName', sprintf('\\fontsize{12}Group 1 (-1) - Misclassified'));
 
 % Plot Cluster Centroids
 plot(C_euclidean(:, 1), C_euclidean(:, 2), 'kp', 'MarkerSize', 14, ...
-    'MarkerFaceColor', 'y', 'LineWidth', 1.5, 'DisplayName', 'Centroids');
+    'MarkerFaceColor', 'y', 'LineWidth', 1.5, 'DisplayName', sprintf('\\fontsize{12}Centroids'));
 
-xlabel('Weighted Permutation Entropy (H)');
-ylabel('Complexity (C)');
+xlabel('Weighted Permutation Entropy H','FontSize', 15, 'FontWeight', 'bold');
+ylabel('Complexity C','FontSize', 15, 'FontWeight', 'bold');
 title(sprintf('WHxC K-Means (Acc: %.1f%%, F1: %.2f, Sens: %.2f, Spec: %.2f)', ...
     acc * 100, F1, sensitivity, specificity));
 legend('Location', 'best');
@@ -99,9 +99,9 @@ x_H_C2 = 2 + (rand(size(dist_H_to_C2)) - 0.5) * 0.15;
 x_S_C1 = 3 + (rand(size(dist_S_to_C1)) - 0.5) * 0.15;
 x_S_C2 = 4 + (rand(size(dist_S_to_C2)) - 0.5) * 0.15;
 
-scatter(x_H_C1, dist_H_to_C1, 35, color_h, 'o', 'filled', 'MarkerFaceAlpha', 0.5, 'DisplayName', 'Healthy Points');
+scatter(x_H_C1, dist_H_to_C1, 35, color_h, 'o', 'filled', 'MarkerFaceAlpha', 0.5, 'DisplayName', 'Group 2 Points');
 scatter(x_H_C2, dist_H_to_C2, 35, color_h, 'o', 'filled', 'MarkerFaceAlpha', 0.5, 'HandleVisibility', 'off');
-scatter(x_S_C1, dist_S_to_C1, 35, color_s, 's', 'filled', 'MarkerFaceAlpha', 0.5, 'DisplayName', 'Sick Points');
+scatter(x_S_C1, dist_S_to_C1, 35, color_s, 's', 'filled', 'MarkerFaceAlpha', 0.5, 'DisplayName', 'Group 1 Points');
 scatter(x_S_C2, dist_S_to_C2, 35, color_s, 's', 'filled', 'MarkerFaceAlpha', 0.5, 'HandleVisibility', 'off');
 
 means_dist = [mean(dist_H_to_C1), mean(dist_H_to_C2), mean(dist_S_to_C1), mean(dist_S_to_C2)];
@@ -113,10 +113,10 @@ plot(1:4, means_dist, 'kd', 'MarkerSize', 8, 'MarkerFaceColor', 'k', 'HandleVisi
 xlim([0.5, 4.5]);
 xticks(1:4);
 xticklabels({ ...
-    'Healthy \rightarrow Centroid 1 (Healthy)', ...
-    'Healthy \rightarrow Centroid 2 (Sick)', ...
-    'Sick \rightarrow Centroid 1 (Healthy)', ...
-    'Sick \rightarrow Centroid 2 (Sick)'});
+    'Group 2 \rightarrow Centroid 1 (Group 2)', ...
+    'Group 2 \rightarrow Centroid 2 (Group 1)', ...
+    'Group 1 \rightarrow Centroid 1 (Group 2)', ...
+    'Group 1 \rightarrow Centroid 2 (Group 1)'});
 xtickangle(15);
 ylabel('Squared Euclidean Distance to Centroid');
 title('Distances to Centroids by Ground Truth Class');
