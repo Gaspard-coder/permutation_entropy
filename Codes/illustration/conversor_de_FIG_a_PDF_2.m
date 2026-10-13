@@ -2,11 +2,11 @@ clear;
 clc;
 
 % Archivo FIG
-archivo_fig = '/home/gaspichou/Documents/git/permutation_entropy/DBT2_article/figures/final_classification.fig';
+archivo_fig = '/home/gaspichou/Documents/git/permutation_entropy/DBT2_article/figures/kmeans_ex.fig';
 
 
 % Archivo PDF
-archivo_pdf = '/home/gaspichou/Documents/git/permutation_entropy/DBT2_article/figures/final_classification.pdf';
+archivo_pdf = '/home/gaspichou/Documents/git/permutation_entropy/DBT2_article/figures/kmeans_ex.pdf';
 
 % Abrir figura
 h = openfig(archivo_fig, 'invisible');

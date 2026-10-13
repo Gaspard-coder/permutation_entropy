@@ -32,7 +32,7 @@ hold on; grid on;
 % A. Plot theoretical bounds
 h_cmax = plot(H_max, C_max, 'k-', 'LineWidth', 2, 'DisplayName', sprintf('C_{max} (m=%d)', m));
 h_cmin = plot(H_min, C_min, 'k--', 'LineWidth', 2, 'DisplayName', sprintf('C_{min} (m=%d)', m));
-
+legend('FontSize', 10);
 % B. Plot the area for Folder 1 (Light Blue [0.4 0.7 0.9])
 h_area1 = scatter(H_vals1, C_vals1, 40, 'blue' , 'filled', ...
     'MarkerFaceAlpha', 0.6, 'MarkerEdgeColor', 'none', ...
@@ -56,10 +56,10 @@ h_std2 = errorbar(H_mean2, C_mean2, C_std2, C_std2, H_std2, H_std2, 'o', ...
     'DisplayName', sprintf('Centroid 2 (%s)\nH_{st}=%.3f, C_{st}=%.3f', name2, H_std2, C_std2));
 
 % F. Formatting
-xlabel('Normalized Weigthed Permutation Entropy (H)', 'FontSize', 12, 'FontWeight', 'bold');
-ylabel('Jensen-Shannon Complexity (C)', 'FontSize', 12, 'FontWeight', 'bold');
-title(sprintf('Comparison: %s vs %s (m=%d, t=%d)', name1, name2, m, t), ...
-    'FontSize', 14, 'FontWeight', 'bold', 'Interpreter', 'none');
+xlabel('Normalized Weigthed Permutation Entropy H', 'FontSize', 14, 'FontWeight', 'bold');
+ylabel('Complexity C', 'FontSize', 14, 'FontWeight', 'bold');
+%title(sprintf('Comparison: %s vs %s (m=%d, t=%d)', name1, name2, m, t), ...
+%    'FontSize', 14, 'FontWeight', 'bold', 'Interpreter', 'none');
 
 xlim([0 1]);
 max_c = max([C_max(:); C_vals1(:); C_vals2(:)]);

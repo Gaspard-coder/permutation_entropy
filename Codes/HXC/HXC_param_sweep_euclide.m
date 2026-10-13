@@ -17,7 +17,7 @@ function [best_m, best_t, best_dist] = HXC_param_sweep_euclide(t_array, m_array,
 % Output:
 %     best_m      : optimal embedding dimension
 %     best_t      : optimal time delay yielding maximum centroid separation
-%     best_dist   : maximum Euclidean distance between folder centroids
+%     best_dist   : maximum Euclidean distance between folder barycenters
 %     Plots       : Heatmap + Distance vs m curves for each t
 % =========================================================================
 
@@ -31,7 +31,7 @@ for idx_m = 1:length(m_array)
         [~, ~, H_mean1, C_mean1] = process_folder(folder1, m, t);
         [~, ~, H_mean2, C_mean2] = process_folder(folder2, m, t);
         
-        % Distance between the centroids (H_mean, C_mean)
+        % Distance between the barycenters (H_mean, C_mean)
         dist(idx_m, idx_t) = pdist2([H_mean1, C_mean1], [H_mean2, C_mean2]);
     end
 end
@@ -45,7 +45,7 @@ best_t = t_array(best_t_idx);
 fprintf('\n=== Results ===\n');
 fprintf('Best embedding dimension (m)   : %d\n', best_m);
 fprintf('Best embedding time delay (t) : %d\n', best_t);
-fprintf('Maximum distance between centroids : %.4f\n', best_dist);
+fprintf('Maximum distance between barycenters : %.4f\n', best_dist);
 
 % Display Figures (Side-by-side)
 figure('Color', 'w', 'Position', [100, 100, 1100, 450]);
@@ -66,19 +66,19 @@ subplot(1, 2, 2);
 plot(m_array, dist, '-o', 'LineWidth', 1.5);
 grid on;
 xlabel('Embedding dimension (m)');
-ylabel('Distance between centroids');
+ylabel('Distance between barycenters');
 title('Distance vs m (for each t)');
 xticks(m_array);
 
 % Generate legend dynamic labels
-legend_labels = arrayfun(@(t) sprintf('t = %d', t), t_array, 'UniformOutput', false);
+legend_labels = arrayfun(@(t) sprintf('\\fontsize{12}t = %d', t), t_array, 'UniformOutput', false);
 legend(legend_labels, 'Location', 'bestoutside');
 
 figure('Color', 'w', 'Position', [200, 200, 700, 500], 'Name', 'Distance vs m (Standalone)');
 plot(m_array, dist, '-o', 'LineWidth', 1.5);
 grid on;
-xlabel('Embedding dimension (m)', 'FontSize', 11);
-ylabel('Distance between centroids', 'FontSize', 11);
+xlabel('Embedding dimension (m)', 'FontSize', 14, 'FontWeight','bold');
+ylabel('Distance between barycenters', 'FontSize', 14,'FontWeight','bold');
 title('Distance vs m for each fixed t', 'FontSize', 12, 'FontWeight', 'bold');
 xticks(m_array);
 legend(legend_labels, 'Location', 'bestoutside');

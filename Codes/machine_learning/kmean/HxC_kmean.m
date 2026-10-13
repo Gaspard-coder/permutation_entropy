@@ -13,8 +13,8 @@ X = [Features_Healthy; Features_Sick];
 Y = [ones(size(Features_Healthy, 1), 1); -ones(size(Features_Sick, 1), 1)];
 
 % k-means clustering with centroid extraction and distance matrix D
-[idx, C_cosine, ~, D] = kmeans(X, k, 'Distance', 'cosine', 'Replicates', 1, 'MaxIter', 100, 'Start', 'plus');
-%[idx, C_cosine, ~, D] = kmeans(X, k, 'Distance', 'cosine', 'Replicates', 5, 'MaxIter', 1000, 'Start', 'sample');
+%[idx, C_cosine, ~, D] = kmeans(X, k, 'Distance', 'cosine', 'Replicates', 1, 'MaxIter', 100, 'Start', 'plus');
+[idx, C_cosine, ~, D] = kmeans(X, k);
 
 % Align clusters to ground truth: ensure Cluster 1 corresponds to Healthy (+1)
 if mean(Y(idx == 1)) < mean(Y(idx == 2))
@@ -44,8 +44,8 @@ F1          = 2 * TP / max(2*TP + FP + FN, eps);
 fprintf('Accuracy: %.2f | F1-score: %.2f | Sensitivity: %.2f | Specificity: %.2f\n', ...
     acc, F1, sensitivity, specificity);
 fprintf('Euclidean Centroids (H, C):\n');
-fprintf('  Cluster 1 (Healthy) : H = %.4f, C = %.4f\n', C_euclidean(1, 1), C_euclidean(1, 2));
-fprintf('  Cluster 2 (Sick)    : H = %.4f, C = %.4f\n', C_euclidean(2, 1), C_euclidean(2, 2));
+fprintf('  Cluster 1 (Group 2) : H = %.4f, C = %.4f\n', C_euclidean(1, 1), C_euclidean(1, 2));
+fprintf('  Cluster 2 (Group 1)    : H = %.4f, C = %.4f\n', C_euclidean(2, 1), C_euclidean(2, 2));
 
 % Color definitions
 color_h = [0.1, 0.4, 0.8];
@@ -62,22 +62,22 @@ hold on; grid on;
 
 % Plot Healthy (+1) points
 scatter(X(is_healthy & is_correct, 1), X(is_healthy & is_correct, 2), 50, ...
-    color_h, 'o', 'filled', 'DisplayName', 'Healthy (+1) - Correct');
+    color_h, 'o', 'filled', 'DisplayName', 'Group 2 (+1) - Correct');
 scatter(X(is_healthy & ~is_correct, 1), X(is_healthy & ~is_correct, 2), 70, ...
-    color_h, 'x', 'LineWidth', 2, 'DisplayName', 'Healthy (+1) - Misclassified');
+    color_h, 'x', 'LineWidth', 2, 'DisplayName', 'Group 2 (+1) - Misclassified');
 
 % Plot Sick (-1) points
 scatter(X(is_sick & is_correct, 1), X(is_sick & is_correct, 2), 50, ...
-    color_s, 'o', 'filled', 'DisplayName', 'Sick (-1) - Correct');
+    color_s, 'o', 'filled', 'DisplayName', 'Group 1 (-1) - Correct');
 scatter(X(is_sick & ~is_correct, 1), X(is_sick & ~is_correct, 2), 70, ...
-    color_s, 'x', 'LineWidth', 2, 'DisplayName', 'Sick (-1) - Misclassified');
-
+    color_s, 'x', 'LineWidth', 2, 'DisplayName', 'Group 1 (-1) - Misclassified');
+legend('FontSize', 14);
 % Plot Euclidean Cluster Centroids
 plot(C_euclidean(:, 1), C_euclidean(:, 2), 'kp', 'MarkerSize', 14, ...
     'MarkerFaceColor', 'y', 'LineWidth', 1.5, 'DisplayName', 'Euclidean Centroids');
 
-xlabel('Entropy (H)');
-ylabel('Complexity (C)');
+xlabel('Normalized Permutation Entropy H','FontSize', 14, 'FontWeight','bold');
+ylabel('Complexity C','FontSize', 14, 'FontWeight','bold');
 title(sprintf('HxC K-Means (Acc: %.1f%%, F1: %.2f, Sens: %.2f, Spec: %.2f)', ...
     acc * 100, F1, sensitivity, specificity));
 legend('Location', 'best');
